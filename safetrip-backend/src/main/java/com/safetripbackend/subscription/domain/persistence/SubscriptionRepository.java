@@ -1,8 +1,10 @@
-package com.pe.safetripbackend.subscription.domain.persistence;
+package com.safetripbackend.subscription.domain.persistence;
 
+import com.safetripbackend.user.domain.entity.Subscription;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.tuempresa.tuaplicacion.entidades.Usuario;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    Usuario findByEmail(String email);
+@Repository
+public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
+    Optional<Subscription> findByIdTransaccionIZiPay(String idTransaccionIZiPay);
+    
 }

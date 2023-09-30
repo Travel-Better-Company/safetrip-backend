@@ -1,12 +1,10 @@
-package com.pe.safetripbackend.subscription.resource;
-
-import lombok.Data;
+package com.safetripbackend.subscription.resource;
 
 @Data
-public class UsuarioResource {
+public class SubscriptionResource {
     private Long id;
     private String nombre;
-    private String email;
+    private String descripcion;
+    
     
 }
-

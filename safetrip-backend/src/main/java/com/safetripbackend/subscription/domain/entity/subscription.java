@@ -1,17 +1,16 @@
-package com.pe.safetripbackend.subscription.domain.entity;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+package com.safetripbackend.subscription.domain.entity;
 
 @Entity
-public class Usuario {
+public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    private String email;
-    private String contrasena;
+    private String descripcion;
+    
+    private String estadoSuscripcion; 
+    private String idTransaccionIZiPay; 
+    
 
+    
 }

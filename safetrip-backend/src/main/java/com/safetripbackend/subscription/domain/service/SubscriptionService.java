@@ -1,29 +1,33 @@
-package com.pe.safetripbackend.subscription.domain.service;
+package com.safetripbackend.subscription.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.tuempresa.tuaplicacion.entidades.Usuario;
-import com.tuempresa.tuaplicacion.repositorios.UsuarioRepository;
+
+import java.util.Optional;
 
 @Service
-public class UsuarioService {
-    private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
+public class SubscriptionService {
+    private final SubscriptionRepository subscriptionRepository;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
-        this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder;
+    public SubscriptionService(SubscriptionRepository subscriptionRepository) {
+        this.subscriptionRepository = subscriptionRepository;
     }
 
-    public Usuario registrarUsuario(Usuario usuario) {
-
-        usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
-        return usuarioRepository.save(usuario);
+    public Subscription crearSuscripcion(Subscription subscription) {
+        
+        return subscriptionRepository.save(subscription);
     }
 
-    public Usuario encontrarPorEmail(String email) {
-        return usuarioRepository.findByEmail(email);
+    public Subscription obtenerSuscripcionPorId(Long id) {
+        return subscriptionRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Suscripción no encontrada con ID: " + id));
     }
+
+    public Subscription obtenerSuscripcionPorIdTransaccionIZiPay(String idTransaccionIZiPay) {
+        return subscriptionRepository.findByIdTransaccionIZiPay(idTransaccionIZiPay)
+                .orElseThrow(() -> new NotFoundException("Suscripción no encontrada con ID de transacción en iZiPay: " + idTransaccionIZiPay));
+    }
+
+
 }

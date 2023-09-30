@@ -1,23 +1,37 @@
-package com.pe.safetripbackend.subscription.api;
+package com.safetripbackend.subscription.api;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.tuempresa.tuaplicacion.entidades.Usuario;
-import com.tuempresa.tuaplicacion.servicios.UsuarioService;
+import com.safetripbackend.domain.entity.Subscription;
+import com.safetripbackend.domain.service.SubscriptionService;
 
 @RestController
-@RequestMapping("/usuarios")
-public class UserController {
-    private final UsuarioService usuarioService;
+@RequestMapping("/subscription")
+public class SubscriptionController {
+    private final SubscriptionService subscriptionService;
+    private final SubscriptionMapper subscriptionMapper;
 
     @Autowired
-    public UserController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
+    public SubscriptionController(SubscriptionService subscriptionService, SubscriptionMapper subscriptionMapper) {
+        this.subscriptionService = subscriptionService;
+        this.subscriptionMapper = subscriptionMapper;
     }
 
-    @PostMapping("/registro")
-    public Usuario registrarUsuario(@RequestBody Usuario usuario) {
-        return usuarioService.registrarUsuario(usuario);
+    @PostMapping
+    public ResponseEntity<SubscriptionResource> crearSuscripcion(@RequestBody SubscriptionResource subscriptionResource) {
+        Subscription subscription = subscriptionMapper.resourceToEntity(subscriptionResource);
+        Subscription nuevaSuscripcion = subscriptionService.crearSuscripcion(subscription);
+        SubscriptionResource nuevaSuscripcionResource = subscriptionMapper.entityToResource(nuevaSuscripcion);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaSuscripcionResource);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SubscriptionResource> obtenerSuscripcionPorId(@PathVariable Long id) {
+        Subscription subscription = subscriptionService.obtenerSuscripcionPorId(id);
+        SubscriptionResource subscriptionResource = subscriptionMapper.entityToResource(subscription);
+        return ResponseEntity.ok(subscriptionResource);
+    }
+
+    
 }
