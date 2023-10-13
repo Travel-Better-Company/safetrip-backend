@@ -1,5 +1,8 @@
-package com.safetripbackend.planner.domain.entity;
+package com.safetripbackend.PlannerItinerarie.entity;
 
+import lombok.Data;
+
+@Data
 public class Cities {
 
     private int id;
