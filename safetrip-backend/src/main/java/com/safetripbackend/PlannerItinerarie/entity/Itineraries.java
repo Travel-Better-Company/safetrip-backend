@@ -8,8 +8,11 @@ import lombok.Data;
 
 import java.time.LocalDate;
 @Data
+@Entity
 public class Itineraries {
     // Atributos
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private LocalDate ini_date;
