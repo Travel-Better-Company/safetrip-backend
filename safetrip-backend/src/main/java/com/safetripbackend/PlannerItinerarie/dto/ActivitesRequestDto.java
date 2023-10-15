@@ -1,4 +1,4 @@
 package com.safetripbackend.PlannerItinerarie.dto;
 
-public class ItinerarieDto {
+public class ActivitesRequestDto {
 }
