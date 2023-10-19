@@ -49,7 +49,7 @@ public class ItinerarieService {
     }
 
     /*Validaciones que pasara nuestro itinerario, actividades y demás*/
-    public void ducplicateActivites(ItinerariesResponseDto itinerarie) {
+    public void duplicateActivites(ItinerariesResponseDto itinerarie) {
         List<ActivitesResponseDto> itinerarieActivities = itinerarie.getActivities();
 
         Set<ActivitesResponseDto> activitySet = new HashSet<>();
@@ -70,6 +70,16 @@ public class ItinerarieService {
 
     public void sizeActivities(){}
     public void dateError(){}
+
+    public List<Itinerary> findByDestination(String destination) {
+        List<Itinerary> itinerariesByDestination = new ArrayList<>();
+        for (Itinerary itinerary : itineraries) {
+            if (itinerary.getDestination().equalsIgnoreCase(destination)) {
+                itinerariesByDestination.add(itinerary);
+            }
+        }
+        return itinerariesByDestination;
+    }
 
 
 
