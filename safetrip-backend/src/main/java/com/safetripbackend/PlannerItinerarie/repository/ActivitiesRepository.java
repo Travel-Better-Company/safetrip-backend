@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface ActivityRepository extends JpaRepository<Activities, Long> {
 
     @Query("SELECT a FROM Activities a WHERE a.itinerary = :itinerary AND a.time BETWEEN :startTime AND :endTime")
-    List<Activities> findActivitiesInTimeRange(@Param("itinerary") Itinerary itinerary, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<Activities> findActivitiesInTimeRange(@Param("itinerary") Itineraries itinerary, @Param("startTime") String startTime, @Param("endTime") String endTime);
 
     @Query("SELECT a FROM Activities a WHERE a.name = :activityName")
     List<Activities> findActivitiesByName(@Param("activityName") String activityName);

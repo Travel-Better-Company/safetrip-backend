@@ -17,15 +17,15 @@ public class ActivityService {
 
     //
 
-    public List<Activity> findActivitiesByName(String activityName) {
+    public List<Activities> findActivitiesByName(String activityName) {
         return activityRepository.findActivitiesByName(activityName);
     }
 
-    public List<Activity> findActivitiesByName(String activityName) {
+    public List<Activities> findActivitiesByName(String activityName) {
         return activityRepository.findActivitiesByName(activityName);
     }
 
-    public Optional<Activity> findActivityById(Long id) {
+    public Optional<Activities> findActivityById(Long id) {
         return activityRepository.findById(id);
     }
 }

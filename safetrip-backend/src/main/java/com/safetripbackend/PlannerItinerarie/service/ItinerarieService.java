@@ -71,9 +71,9 @@ public class ItinerarieService {
     public void sizeActivities(){}
     public void dateError(){}
 
-    public List<Itinerary> findByDestination(String destination) {
-        List<Itinerary> itinerariesByDestination = new ArrayList<>();
-        for (Itinerary itinerary : itineraries) {
+    public List<Itineraries> findByDestination(String destination) {
+        List<Itineraries> itinerariesByDestination = new ArrayList<>();
+        for (Itineraries itinerary : itineraries) {
             if (itinerary.getDestination().equalsIgnoreCase(destination)) {
                 itinerariesByDestination.add(itinerary);
             }

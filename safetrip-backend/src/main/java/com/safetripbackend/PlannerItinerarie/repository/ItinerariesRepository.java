@@ -3,11 +3,11 @@ package com.safetripbackend.PlannerItinerarie.repository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ItinerarieRepository {
-    List<Itinerary> findByDestination(String destination);
+public interface ItinerariesRepository {
+    List<Itineraries> findByDestination(String destination);
 
     //Buscar Itinerarios por Fecha de Creación:
-    List<Itinerary> findByCreationDateBetween(LocalDate startDate, LocalDate endDate);
+    List<Itineraries> findByCreationDateBetween(LocalDate startDate, LocalDate endDate);
 
 
 }
