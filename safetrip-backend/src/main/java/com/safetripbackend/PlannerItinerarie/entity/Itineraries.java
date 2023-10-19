@@ -1,14 +1,17 @@
 package com.safetripbackend.PlannerItinerarie.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
+
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Itineraries {
     // Atributos
     @Id
@@ -17,6 +20,10 @@ public class Itineraries {
     private String name;
     private LocalDate ini_date;
     private LocalDate end_date;
-    private int id_user;
-    private int id_city;
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private Users users;
+    @ManyToOne
+    @JoinColumn(name = "id_city")
+    private Cities city;
 }

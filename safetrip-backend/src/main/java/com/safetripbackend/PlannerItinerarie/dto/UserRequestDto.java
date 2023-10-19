@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class UsersRequestDto {
+public class UserRequestDto {
     @Size(max = 50, message = "El nombre del usuario no debe exceder los 50 caracteres")
     private String name; // Ejemplo de atributo de tipo cadena
     @Size(max = 50, message = "El correo electronico no debe exceder los 50 caracteres")
