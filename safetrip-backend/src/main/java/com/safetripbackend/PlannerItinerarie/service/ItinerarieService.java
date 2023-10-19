@@ -50,7 +50,25 @@ public class ItinerarieService {
     }
 
     /*Validaciones que pasara nuestro itinerario, actividades y demás*/
-    public void ducplicateActivites(){}
+    public void ducplicateActivites(ItinerariesResponseDto itinerarie) {
+        List<ActivitesResponseDto> itinerarieActivities = itinerarie.getActivities();
+
+        Set<ActivitesResponseDto> activitySet = new HashSet<>();
+        List<ActivitesResponseDto> duplicateActivities = new ArrayList<>();
+
+        for (ActivitesResponseDto activity : itinerarieActivities) {
+            if (!activitySet.add(activity)) {
+                // La actividad ya existe en el conjunto, por lo que es un duplicado.
+                duplicateActivities.add(activity);
+            }
+        }
+
+        if (!duplicateActivities.isEmpty()) {
+            // Aquí puedes manejar los duplicados, por ejemplo, lanzar una excepción o realizar alguna otra acción.
+            System.out.println("Actividades duplicadas encontradas: " + duplicateActivities);
+        }
+    }
+
     public void sizeActivities(){}
     public void dateError(){}
 
