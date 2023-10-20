@@ -7,7 +7,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 @Data
-public class ItinerarieRequestDto {
+public class ItineraryRequestDto {
     @Size(max = 50, message = "El nombre del itinerario no debe exceder los 50 caracteres")
     private String name;
     @JsonFormat(pattern = "yyyy-MM-dd")

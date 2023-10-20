@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class CitieRequestDto {
+public class CityRequestDto {
     @NotBlank(message = "El nombre de la ciudad no debe estar en blanco")
     @Size(max = 50, message = "El nombre de la ciudad no debe exceder los 50 caracteres")
     private String name;

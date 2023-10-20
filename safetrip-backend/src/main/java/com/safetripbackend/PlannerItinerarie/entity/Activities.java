@@ -13,10 +13,11 @@ import java.time.LocalDate;
 public class Activities {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @ManyToOne
     @JoinColumn(name = "id_itinerario")
     private Itineraries itineraries;
-    private String name_activity;
-
+    private String name;
+    private LocalDate iniDate;
+    private LocalDate endDate;
 }
