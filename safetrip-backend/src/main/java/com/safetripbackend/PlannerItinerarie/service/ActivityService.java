@@ -7,6 +7,7 @@ import com.safetripbackend.PlannerItinerarie.exception.ResourceAlreadyExistsExce
 import com.safetripbackend.PlannerItinerarie.exception.ResourceNotFoundException;
 import com.safetripbackend.PlannerItinerarie.mappers.ActivityMapper;
 import com.safetripbackend.PlannerItinerarie.repository.ActivityRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 
 @Service
+@RequiredArgsConstructor
 public class ActivityService {
 
     private final ActivityRepository activityRepository;
@@ -32,7 +34,7 @@ public class ActivityService {
 
     @Transactional
     public ActivityResponseDto createActivity(ActivityRequestDto activityResource) {
-        if (activityRepository.existsByNameAndIniDate(activityResource.getName_activity(), activityResource.getIniDate())) {
+        if (activityRepository.existsByNameAndIniDate(activityResource.getName(), activityResource.getIniDate())) {
             throw new ResourceAlreadyExistsException("Actividad con el mismo nombre y fecha inicial ya existe");
         }
 
@@ -48,17 +50,23 @@ public class ActivityService {
         if (optionalActivity.isPresent()) {
             Activities activity = optionalActivity.get();
 
-            activity.setFirstName(activityResource.getFirstName());
-            activity.setLastName(activityResource.getLastName());
-            activity.setEmail(activityResource.getEmail());
+            activity.setName(activityResource.getName());
+            activity.setIniDate(activityResource.getIniDate());
+            activity.setEndDate(activityResource.getEndDate());
 
-            customer = customerRepository.save(customer);
-            return customerMapper.entityToResponseResource(customer);
+            activity = activityRepository.save(activity);
+            return activityMapper.entityToResponseResource(activity);
         } else {
-            throw new ResourceNotFoundException("Customer not found with id: " + customerId);
+            throw new ResourceNotFoundException("Actividad con ese id no existe: " + activityId);
         }
     }
-
+    @Transactional
+    public void deleteActivity(Long activityId) {
+        if (!activityRepository.existsById(activityId)) {
+            throw new ResourceNotFoundException("Actividad con ese id no existe: " + activityId);
+        }
+        activityRepository.deleteById(activityId);
+    }
     public List<Activities> findActivitiesByName(String activityName) {
         return activityRepository.findActivitiesByName(activityName);
     }

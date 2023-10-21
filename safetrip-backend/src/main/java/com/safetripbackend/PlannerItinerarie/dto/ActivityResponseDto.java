@@ -13,4 +13,4 @@ public class ActivityResponseDto {
     private LocalDate iniDate;
     private LocalDate endDate;
 }
-}
+

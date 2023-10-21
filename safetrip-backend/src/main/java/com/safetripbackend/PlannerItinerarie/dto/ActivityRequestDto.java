@@ -15,7 +15,7 @@ public class ActivityRequestDto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Size(max = 50, message = "El nombre de la actividad no debe exceder los 50 caracteres")
-    private String name_activity;
+    private String name;
     @NotNull(message = "El id del itinerario no debe ser null")
     private int id_itinerary;
     @JsonFormat(pattern = "yyyy-MM-dd")
