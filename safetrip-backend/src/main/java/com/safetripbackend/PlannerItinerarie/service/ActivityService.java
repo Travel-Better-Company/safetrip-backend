@@ -73,4 +73,5 @@ public class ActivityService {
     public Optional<Activities> findActivityById(Long id) {
         return activityRepository.findById(id);
     }
+
 }

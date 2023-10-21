@@ -8,11 +8,10 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+
 
 @Repository
 public interface ActivityRepository extends JpaRepository<Activities, Long> {
-
     boolean existsByNameAndIniDate(String name, LocalDate iniDate);
     @Query("SELECT a FROM Activities a WHERE a.iniDate BETWEEN :startTime AND :endTime")
     List<Activities> findActivitiesInTimeRange(@Param("itinerary") Itineraries itinerary, @Param("startTime") String startTime, @Param("endTime") String endTime);
