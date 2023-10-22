@@ -1,6 +1,6 @@
-package com.safetripbackend.PlannerItinerarie.dto;
+package com.safetripbackend.dto;
 
-import com.safetripbackend.PlannerItinerarie.entity.Itineraries;
+import com.safetripbackend.entity.Itineraries;
 import lombok.Data;
 
 import java.time.LocalDate;

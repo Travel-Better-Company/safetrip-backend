@@ -1,4 +1,4 @@
-package com.safetripbackend.PlannerItinerarie.dto;
+package com.safetripbackend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

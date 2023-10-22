@@ -1,5 +1,5 @@
-package com.safetripbackend.PlannerItinerarie.controller;
-import com.safetripbackend.PlannerItinerarie.service.ActivityService;
+package com.safetripbackend.controller;
+import com.safetripbackend.service.ActivityService;
 import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/Activities")

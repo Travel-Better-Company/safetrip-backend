@@ -1,4 +1,4 @@
-package com.safetripbackend.PlannerItinerarie.controller;
+package com.safetripbackend.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

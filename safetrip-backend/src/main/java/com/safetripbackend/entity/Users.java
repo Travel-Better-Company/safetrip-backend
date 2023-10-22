@@ -1,4 +1,4 @@
-package com.safetripbackend.PlannerItinerarie.entity;
+package com.safetripbackend.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

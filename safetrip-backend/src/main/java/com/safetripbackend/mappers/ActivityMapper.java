@@ -1,8 +1,8 @@
-package com.safetripbackend.PlannerItinerarie.mappers;
+package com.safetripbackend.mappers;
 
-import com.safetripbackend.PlannerItinerarie.dto.ActivityRequestDto;
-import com.safetripbackend.PlannerItinerarie.dto.ActivityResponseDto;
-import com.safetripbackend.PlannerItinerarie.entity.Activities;
+import com.safetripbackend.dto.ActivityRequestDto;
+import com.safetripbackend.dto.ActivityResponseDto;
+import com.safetripbackend.entity.Activities;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

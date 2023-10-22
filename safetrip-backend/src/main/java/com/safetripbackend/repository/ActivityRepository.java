@@ -1,6 +1,6 @@
-package com.safetripbackend.PlannerItinerarie.repository;
+package com.safetripbackend.repository;
 
-import com.safetripbackend.PlannerItinerarie.entity.*;
+import com.safetripbackend.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;

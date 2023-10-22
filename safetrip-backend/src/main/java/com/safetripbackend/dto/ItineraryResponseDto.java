@@ -1,6 +1,6 @@
-package com.safetripbackend.PlannerItinerarie.dto;
+package com.safetripbackend.dto;
 
-import com.safetripbackend.PlannerItinerarie.entity.Cities;
+import com.safetripbackend.entity.Cities;
 import lombok.Data;
 
 @Data

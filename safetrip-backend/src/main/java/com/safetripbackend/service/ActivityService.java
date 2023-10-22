@@ -1,12 +1,12 @@
-package com.safetripbackend.PlannerItinerarie.service;
+package com.safetripbackend.service;
 
-import com.safetripbackend.PlannerItinerarie.dto.ActivityRequestDto;
-import com.safetripbackend.PlannerItinerarie.dto.ActivityResponseDto;
-import com.safetripbackend.PlannerItinerarie.entity.Activities;
-import com.safetripbackend.PlannerItinerarie.exception.ResourceAlreadyExistsException;
-import com.safetripbackend.PlannerItinerarie.exception.ResourceNotFoundException;
-import com.safetripbackend.PlannerItinerarie.mappers.ActivityMapper;
-import com.safetripbackend.PlannerItinerarie.repository.ActivityRepository;
+import com.safetripbackend.dto.ActivityRequestDto;
+import com.safetripbackend.dto.ActivityResponseDto;
+import com.safetripbackend.entity.Activities;
+import com.safetripbackend.exception.ResourceAlreadyExistsException;
+import com.safetripbackend.exception.ResourceNotFoundException;
+import com.safetripbackend.mappers.ActivityMapper;
+import com.safetripbackend.repository.ActivityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;

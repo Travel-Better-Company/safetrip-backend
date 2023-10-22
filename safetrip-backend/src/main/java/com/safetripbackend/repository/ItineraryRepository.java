@@ -1,5 +1,5 @@
-package com.safetripbackend.PlannerItinerarie.repository;
-import com.safetripbackend.PlannerItinerarie.entity.Itineraries;
+package com.safetripbackend.repository;
+import com.safetripbackend.entity.Itineraries;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

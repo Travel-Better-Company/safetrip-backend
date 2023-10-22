@@ -1,11 +1,11 @@
-package com.safetripbackend.PlannerItinerarie.service;
+package com.safetripbackend.service;
 
-import com.safetripbackend.PlannerItinerarie.dto.*;
-import com.safetripbackend.PlannerItinerarie.entity.Itineraries;
-import com.safetripbackend.PlannerItinerarie.exception.ResourceAlreadyExistsException;
-import com.safetripbackend.PlannerItinerarie.exception.ResourceNotFoundException;
-import com.safetripbackend.PlannerItinerarie.mappers.ItineraryMapper;
-import com.safetripbackend.PlannerItinerarie.repository.ItineraryRepository;
+import com.safetripbackend.dto.*;
+import com.safetripbackend.entity.Itineraries;
+import com.safetripbackend.exception.ResourceAlreadyExistsException;
+import com.safetripbackend.exception.ResourceNotFoundException;
+import com.safetripbackend.mappers.ItineraryMapper;
+import com.safetripbackend.repository.ItineraryRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
