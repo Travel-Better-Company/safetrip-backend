@@ -2,6 +2,7 @@ package com.safetripbackend.PlannerItinerarie.service;
 
 import com.safetripbackend.PlannerItinerarie.dto.*;
 import com.safetripbackend.PlannerItinerarie.entity.Activities;
+import com.safetripbackend.PlannerItinerarie.entity.Itineraries;
 import com.safetripbackend.PlannerItinerarie.mappers.ActivityMapper;
 import com.safetripbackend.PlannerItinerarie.repository.ActivityRepository;
 import com.safetripbackend.PlannerItinerarie.repository.ItineraryRepository;
@@ -29,10 +30,11 @@ public class ItineraryService {
 
 
     private final Validator validator;
+    /*
     public ItineraryService(Validator validator){
         this.validator = validator;
         this.loadElements();
-    }
+    }*/
     private void loadElements(){
         /*Falta cargar todos los elementos*/
         UserResponseDto user1 = new UserResponseDto();
@@ -46,8 +48,7 @@ public class ItineraryService {
 
         ActivityResponseDto activitie1 = new ActivityResponseDto();
         activitie1.setId(3);
-        activitie1.setName_activity("Juegos de playa en cartagena");
-        activitie1.setId_itinerario(3);
+        activitie1.setName("Juegos de playa en cartagena");
     }
 
     /*Función para crear un itinerario*/
@@ -58,7 +59,7 @@ public class ItineraryService {
         ItineraryResponseDto newItinerarie = new ItineraryResponseDto();
         return newItinerarie;
     }
-
+    /*
     public List<Itineraries> findByDestination(String destination) {
         List<Itineraries> itinerariesByDestination = new ArrayList<>();
         for (Itineraries itinerary : itineraries) {
@@ -67,7 +68,8 @@ public class ItineraryService {
             }
         }
         return itinerariesByDestination;
-    }
+
+    }*/
 
 
 
