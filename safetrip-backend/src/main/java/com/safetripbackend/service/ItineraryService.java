@@ -6,16 +6,18 @@ import com.safetripbackend.exception.ResourceAlreadyExistsException;
 import com.safetripbackend.exception.ResourceNotFoundException;
 import com.safetripbackend.mappers.ItineraryMapper;
 import com.safetripbackend.repository.ItineraryRepository;
+
 import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 
 @Service
 @RequiredArgsConstructor

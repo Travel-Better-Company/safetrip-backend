@@ -8,9 +8,10 @@ import com.safetripbackend.exception.ResourceNotFoundException;
 import com.safetripbackend.mappers.ActivityMapper;
 import com.safetripbackend.repository.ActivityRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +68,8 @@ public class ActivityService {
         }
         activityRepository.deleteById(activityId);
     }
+
+
     public List<Activities> findActivitiesByName(String activityName) {
         return activityRepository.findActivitiesByName(activityName);
     }
