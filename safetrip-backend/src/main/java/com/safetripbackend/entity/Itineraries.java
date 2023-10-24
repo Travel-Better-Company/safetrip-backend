@@ -6,25 +6,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 public class Itineraries {
+    // Atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private int id;
     private String name;
     private LocalDate ini_date;
     private LocalDate end_date;
-
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
-
+    @JoinColumn(name = "id_user")
+    private Users users;
     @ManyToOne
-    @JoinColumn(name = "city_id")
+    @JoinColumn(name = "id_city")
     private Cities city;
 }

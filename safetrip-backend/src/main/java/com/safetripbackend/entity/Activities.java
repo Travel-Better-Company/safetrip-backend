@@ -20,7 +20,7 @@ public class Activities {
     private LocalDate  endDate;
 
     @ManyToOne
-    @JoinColumn(name = "itinerary_id")
+    @JoinColumn(name = "id_itinerario")
     private Itineraries itinerary;
 
 }

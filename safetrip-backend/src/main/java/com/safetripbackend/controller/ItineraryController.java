@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/itinerary")
+@RequestMapping("/api/v1/itinerary")
 @RequiredArgsConstructor
 public class ItineraryController {
     private final ItineraryService itineraryService;
@@ -28,7 +28,7 @@ public class ItineraryController {
         return new ResponseEntity<>(itineraryResponseResource, HttpStatus.OK);
     }
 
-    @PutMapping("/{itineraryId}")
+    @PutMapping("/update/{itineraryId}")
     public ResponseEntity<ItineraryResponseDto> updateItinerary(
             @PathVariable Long itineraryId,
             @Valid @RequestBody ItineraryRequestDto itineraryResource) {
@@ -36,15 +36,15 @@ public class ItineraryController {
         return new ResponseEntity<>(itineraryResponseResource, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{itineraryId}")
+    @DeleteMapping("/delete/{itineraryId}")
     public ResponseEntity<Void> deleteItinerary(@PathVariable Long itineraryId) {
         itineraryService.deleteItinerary(itineraryId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/{location}")
+    @GetMapping("/find/{location}")
     public ResponseEntity <List<ItineraryResponseDto>> findItinerariesByCity_Location( @PathVariable String location) {
-        List<ItineraryResponseDto> itineraryResponseResource = itineraryService.findItinerariesByCity_Location(location);
+        List<ItineraryResponseDto> itineraryResponseResource = itineraryService.findByDestination(location);
         return new ResponseEntity<>(itineraryResponseResource,HttpStatus.OK);
     }
 }
