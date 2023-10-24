@@ -14,10 +14,13 @@ public class Activities {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @ManyToOne
-    @JoinColumn(name = "id_itinerario")
-    private Itineraries itineraries;
+
     private String name;
-    private LocalDate iniDate;
-    private LocalDate endDate;
+    private LocalDate  iniDate;
+    private LocalDate  endDate;
+
+    @ManyToOne
+    @JoinColumn(name = "itinerary_id")
+    private Itineraries itinerary;
+
 }

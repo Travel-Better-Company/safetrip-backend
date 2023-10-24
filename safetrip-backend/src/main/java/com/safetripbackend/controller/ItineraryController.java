@@ -41,4 +41,10 @@ public class ItineraryController {
         itineraryService.deleteItinerary(itineraryId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/{location}")
+    public ResponseEntity <List<ItineraryResponseDto>> findItinerariesByCity_Location( @PathVariable String location) {
+        List<ItineraryResponseDto> itineraryResponseResource = itineraryService.findItinerariesByCity_Location(location);
+        return new ResponseEntity<>(itineraryResponseResource,HttpStatus.OK);
+    }
 }

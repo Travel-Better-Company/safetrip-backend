@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.User;
 
 @Data
 @Entity
@@ -14,11 +13,13 @@ public class User_Preferences {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @OneToOne
-    @JoinColumn(name = "id_user")
-    private Users users;
+    @JoinColumn(name = "user_id")
+    private Users user;
+
     @ManyToOne
-    @JoinColumn(name = "id_city")
-    private Cities cities;
+    @JoinColumn(name = "city_id")
+    private Cities city;
 
 }

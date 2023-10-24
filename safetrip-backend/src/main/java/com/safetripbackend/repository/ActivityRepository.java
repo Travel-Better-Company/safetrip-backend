@@ -14,7 +14,7 @@ import java.util.List;
 public interface ActivityRepository extends JpaRepository<Activities, Long> {
     boolean existsByNameAndIniDate(String name, LocalDate iniDate);
 
-    List<Activities> findActivitiesInTimeRange(LocalDate startTime,  LocalDate endTime);
+
 
     List<Activities> findActivitiesByName(String activityName);
 

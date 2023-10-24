@@ -8,23 +8,19 @@ import com.safetripbackend.mappers.ItineraryMapper;
 import com.safetripbackend.repository.ItineraryRepository;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Validator;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor
 public class ItineraryService {
     private final ItineraryRepository itineraryRepository;
     private final ItineraryMapper itineraryMapper;
-    private final Validator validator;
     @Transactional
     public ItineraryResponseDto createItinerary(ItineraryRequestDto itineraryResource) {
         if(itineraryRepository.existsByName(itineraryResource.getName())){
@@ -65,14 +61,8 @@ public class ItineraryService {
         List<Itineraries> itinerary = itineraryRepository.findAll();
         return itineraryMapper.entityListToResponseResourceList(itinerary);
     }
-    public List<ItineraryResponseDto> findByDestination(String destination) {
-        List<Itineraries> itinerariesByDestination = itineraryRepository.findAll();
-        for (Itineraries itinerary : itinerariesByDestination) {
-            if (itinerary.getCity().getLocation().equalsIgnoreCase(destination)) {
-                itinerariesByDestination.add(itinerary);
-            }
-        }
-
-        return itineraryMapper.entityListToResponseResourceList(itinerariesByDestination);
+    public List<ItineraryResponseDto> findItinerariesByCity_Location(String location) {
+        List<Itineraries> itineraries = itineraryRepository.findItinerariesByCity_Location(location);
+        return itineraryMapper.entityListToResponseResourceList(itineraries);
     }
 }
