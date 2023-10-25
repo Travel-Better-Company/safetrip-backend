@@ -4,11 +4,11 @@ import com.safetripbackend.dto.*;
 import com.safetripbackend.entity.Itineraries;
 import com.safetripbackend.exception.ResourceAlreadyExistsException;
 import com.safetripbackend.exception.ResourceNotFoundException;
+import com.safetripbackend.mappers.CityMapper;
 import com.safetripbackend.mappers.ItineraryMapper;
 import com.safetripbackend.repository.ItineraryRepository;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Validator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class ItineraryService {
     private final ItineraryRepository itineraryRepository;
     private final ItineraryMapper itineraryMapper;
-    private final Validator validator;
+    private final CityMapper cityMapper;
     @Transactional
     public ItineraryResponseDto createItinerary(ItineraryRequestDto itineraryResource) {
         if(itineraryRepository.existsByName(itineraryResource.getName())){
@@ -42,7 +42,6 @@ public class ItineraryService {
             Itineraries itinerary = optionalItinerary.get();
 
             itinerary.setName(itineraryResource.getName());
-            itinerary.setCity(itineraryResource.getCity());
             itinerary.setIni_date(itineraryResource.getIni_date());
             itinerary.setEnd_date(itineraryResource.getEnd_date());
 

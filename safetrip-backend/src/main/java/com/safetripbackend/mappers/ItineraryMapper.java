@@ -3,12 +3,24 @@ import com.safetripbackend.dto.ItineraryRequestDto;
 import com.safetripbackend.dto.ItineraryResponseDto;
 import com.safetripbackend.entity.Itineraries;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 import java.util.List;
 @Component
 public class ItineraryMapper {
     private final ModelMapper modelMapper;
-    public ItineraryMapper(ModelMapper modelMapper){this.modelMapper = modelMapper;}
+    public ItineraryMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+
+        /* Intento de Configurar ModelMapper para asignar id_user e id_city
+        modelMapper.addMappings(new PropertyMap<ItineraryRequestDto, Itineraries>() {
+            @Override
+            protected void configure() {
+                map().getUsers().setId(source.getId_user());
+                map().getCity().setId(source.getId_city());
+            }
+        });*/
+    }
 
     public Itineraries resourceToEntity(ItineraryRequestDto itinerarieRequestDto){
         return modelMapper.map(itinerarieRequestDto, Itineraries.class);

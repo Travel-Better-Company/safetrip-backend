@@ -1,7 +1,6 @@
 package com.safetripbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.safetripbackend.entity.Cities;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -19,5 +18,4 @@ public class ItineraryRequestDto {
     private int id_user;
     @NotNull(message = "El id de la ciudad no debe ser null")
     private int id_city;
-    private Cities city;
 }
