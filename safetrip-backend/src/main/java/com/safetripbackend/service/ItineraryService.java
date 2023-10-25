@@ -1,11 +1,12 @@
 package com.safetripbackend.service;
 
 import com.safetripbackend.dto.*;
+import com.safetripbackend.entity.Cities;
 import com.safetripbackend.entity.Itineraries;
 import com.safetripbackend.exception.ResourceAlreadyExistsException;
 import com.safetripbackend.exception.ResourceNotFoundException;
-import com.safetripbackend.mappers.CityMapper;
 import com.safetripbackend.mappers.ItineraryMapper;
+import com.safetripbackend.repository.CityRepository;
 import com.safetripbackend.repository.ItineraryRepository;
 
 import jakarta.transaction.Transactional;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +26,7 @@ import java.util.Optional;
 public class ItineraryService {
     private final ItineraryRepository itineraryRepository;
     private final ItineraryMapper itineraryMapper;
-    private final CityMapper cityMapper;
+    private final CityRepository cityRepository;
     @Transactional
     public ItineraryResponseDto createItinerary(ItineraryRequestDto itineraryResource) {
         if(itineraryRepository.existsByName(itineraryResource.getName())){
@@ -44,6 +46,15 @@ public class ItineraryService {
             itinerary.setName(itineraryResource.getName());
             itinerary.setIni_date(itineraryResource.getIni_date());
             itinerary.setEnd_date(itineraryResource.getEnd_date());
+            Optional<Cities> optionalCity = cityRepository.findById((long)itineraryResource.getId_city());
+            if(optionalCity.isPresent()){
+                Cities cities = optionalCity.get();
+                itinerary.setCity(cities);
+            }
+            else
+            {
+                throw new ResourceNotFoundException("Ciudad con ese id no existe "+ itineraryResource.getId_city());
+            }
 
             itinerary = itineraryRepository.save(itinerary);
 
@@ -66,12 +77,13 @@ public class ItineraryService {
     }
     public List<ItineraryResponseDto> findByDestination(String destination) {
         List<Itineraries> itinerariesByDestination = itineraryRepository.findAll();
+        List<Itineraries> matchingItineraries = new ArrayList<>();
         for (Itineraries itinerary : itinerariesByDestination) {
             if (itinerary.getCity().getLocation().equalsIgnoreCase(destination)) {
-                itinerariesByDestination.add(itinerary);
+                matchingItineraries.add(itinerary);
             }
         }
 
-        return itineraryMapper.entityListToResponseResourceList(itinerariesByDestination);
+        return itineraryMapper.entityListToResponseResourceList(matchingItineraries);
     }
 }

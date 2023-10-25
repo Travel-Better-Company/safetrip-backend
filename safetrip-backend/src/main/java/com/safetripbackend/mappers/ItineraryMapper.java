@@ -12,14 +12,15 @@ public class ItineraryMapper {
     public ItineraryMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
 
-        /* Intento de Configurar ModelMapper para asignar id_user e id_city
+
+        //Intento de Configurar ModelMapper para asignar id_user e id_city
         modelMapper.addMappings(new PropertyMap<ItineraryRequestDto, Itineraries>() {
             @Override
             protected void configure() {
-                map().getUsers().setId(source.getId_user());
                 map().getCity().setId(source.getId_city());
+                map().getUsers().setId(source.getId_user());
             }
-        });*/
+        });
     }
 
     public Itineraries resourceToEntity(ItineraryRequestDto itinerarieRequestDto){

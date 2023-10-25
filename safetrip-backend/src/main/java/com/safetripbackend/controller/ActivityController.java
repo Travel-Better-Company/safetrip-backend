@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1/activities")
 @RequiredArgsConstructor
 public class ActivityController {
-    private ActivityService activityService;
+    private final ActivityService activityService;
 
     @PostMapping
     public ResponseEntity<ActivityResponseDto> createActivity(@Valid @RequestBody ActivityRequestDto activityResource){

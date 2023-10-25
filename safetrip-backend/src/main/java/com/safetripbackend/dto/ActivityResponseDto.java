@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 public class ActivityResponseDto {
-    private long id;
+    private int id;
     private Itineraries itineraries;
     private String name;
     private LocalDate iniDate;

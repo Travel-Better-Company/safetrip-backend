@@ -6,6 +6,8 @@ import com.safetripbackend.entity.Cities;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class CityMapper {
     private final ModelMapper modelMapper;
@@ -18,6 +20,12 @@ public class CityMapper {
     }
     public CityResponseDto entityToResponseResource(Cities City){
         return modelMapper.map(City, CityResponseDto.class);
+    }
+    public List<CityResponseDto> entityListToResponseResourceList(List<Cities> cities){
+        return cities
+                .stream()
+                .map(this::entityToResponseResource)
+                .toList();
     }
 
 }

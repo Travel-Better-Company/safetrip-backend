@@ -11,7 +11,7 @@ public class ActivityRequestDto {
     @Size(max = 50, message = "El nombre de la actividad no debe exceder los 50 caracteres")
     private String name;
     @NotNull(message = "El id del itinerario no debe ser null")
-    private int id_itinerary;
+    private Long id_itinerary;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate iniDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
