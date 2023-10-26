@@ -1,12 +1,12 @@
-package com.safetripbackend.followers.controller;
+package com.safetripbackend.controller;
 
-import com.safetripbackend.followers.exception.UserNotFoundException;
+import com.safetripbackend.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.safetripbackend.followers.entity.Users;
+import com.safetripbackend.entity.Users;
 import java.util.List;
-import com.safetripbackend.followers.repository.UsersRepository;
+import com.safetripbackend.repository.UsersRepository;
 
 @RestController
 @RequestMapping("/users")
@@ -21,7 +21,7 @@ public class UsersController {
         Users followed = usersRepository.findById(followedId).orElse(null);
 
         if (follower == null || followed == null) {
-            throw new UserNotFoundException("Usuario no encontrado");
+            throw new ResourceNotFoundException("Usuario no encontrado");
         } else {
             if (!follower.getFollowersIds().contains(followedId)) {
                 follower.getFollowersIds().add(followedId);

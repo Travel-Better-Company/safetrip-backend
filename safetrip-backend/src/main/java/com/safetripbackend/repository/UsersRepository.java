@@ -1,7 +1,7 @@
-package com.safetripbackend.followers.repository;
+package com.safetripbackend.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.safetripbackend.followers.entity.Users;
+import com.safetripbackend.entity.Users;
 
 public interface UsersRepository extends JpaRepository<Users, Integer> {
 }

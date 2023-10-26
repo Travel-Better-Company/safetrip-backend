@@ -1,4 +1,4 @@
-package com.safetripbackend.followers.entity;
+package com.safetripbackend.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

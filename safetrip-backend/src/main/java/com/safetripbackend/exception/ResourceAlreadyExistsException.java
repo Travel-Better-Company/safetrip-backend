@@ -1,4 +1,4 @@
-package com.safetripbackend.followers.exception;
+package com.safetripbackend.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
