@@ -1,4 +1,4 @@
-package com.safetripbackend.dto;
+package com.safetripbackend.followers.dto;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.safetripbackend.entity;
+package com.safetripbackend.followers.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,10 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name; // Ejemplo de atributo de tipo cadena
-    private String email; // Ejemplo de atributo de tipo cadena
-    private String password; // Ejemplo de atributo de tipo cadena
+    private String name;
+    private String email;
+    private String password;
+    private int followersCount;
+    @ElementCollection
+    private List<Integer> followersIds;
 }

@@ -1,4 +1,4 @@
-package com.safetripbackend.exception;
+package com.safetripbackend.followers.exception;
 
 import jakarta.validation.ConstraintViolation;
 import org.springframework.http.HttpStatus;
