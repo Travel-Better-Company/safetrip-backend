@@ -14,11 +14,11 @@ import java.util.List;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
     private String email;
     private String password;
     private int followersCount;
     @ElementCollection
-    private List<Integer> followersIds;
+    private List<Long> followersIds;
 }
