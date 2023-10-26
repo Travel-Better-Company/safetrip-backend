@@ -16,6 +16,7 @@ public class Cities {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String location;
-    private String sights;
+
+    @ElementCollection
+    private List<String> sights;
 }

@@ -79,7 +79,7 @@ public class ItineraryService {
         List<Itineraries> itinerariesByDestination = itineraryRepository.findAll();
         List<Itineraries> matchingItineraries = new ArrayList<>();
         for (Itineraries itinerary : itinerariesByDestination) {
-            if (itinerary.getCity().getLocation().equalsIgnoreCase(destination)) {
+            if (itinerary.getCity().getName().equalsIgnoreCase(destination)) {
                 matchingItineraries.add(itinerary);
             }
         }

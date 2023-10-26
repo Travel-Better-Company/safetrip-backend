@@ -17,7 +17,7 @@ import java.util.List;
 public class CityController {
     private final CityService cityService;
     @PostMapping
-    public ResponseEntity<CityResponseDto> createCity(@Valid @RequestBody CityRequestDto cityResource){
+    public ResponseEntity<CityResponseDto> createCity(@Valid @RequestBody CityRequestDto cityResource) {
         CityResponseDto responseResource = cityService.createCity(cityResource);
         return new ResponseEntity<>(responseResource, HttpStatus.CREATED);
     }
@@ -35,6 +35,7 @@ public class CityController {
         CityResponseDto responseResource = cityService.updateCity(cityId, cityResource);
         return new ResponseEntity<>(responseResource, HttpStatus.OK);
     }
+
 
     @DeleteMapping("/{cityId}")
     public ResponseEntity<Void> deleteCity(@PathVariable Long cityId) {

@@ -16,7 +16,7 @@ import java.util.List;
 import com.safetripbackend.repository.UserRepository;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UsersController {
 
@@ -31,11 +31,27 @@ public class UsersController {
         return new ResponseEntity<>(responseResource, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserResponseDto> updateUser(
+            @PathVariable Long userId,
+            @Valid @RequestBody UserRequestDto userResource) {
+        UserResponseDto userResponseResource = userService.updateUser(userId, userResource);
+        return new ResponseEntity<>(userResponseResource, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> getAllItineraries() {
         List<UserResponseDto> itineraryResponseResource = userService.getAllUsers();
         return new ResponseEntity<>(itineraryResponseResource, HttpStatus.OK);
     }
+
+
     @PostMapping("/{followerId}/follow/{followedId}")
     public Users followUser(@PathVariable("followerId") Long followerId, @PathVariable("followedId") Long followedId) {
         Users follower = userRepository.findById(followerId).orElse(null);

@@ -25,12 +25,6 @@ public class UserService {
         return userMapper.entityListToResponseResourceList(users);
     }
 
-    public UserResponseDto getUserById(Long userId) {
-        Users user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario con este id no existe: " + userId));
-        return userMapper.entityToResponseResource(user);
-    }
-
     @Transactional
     public UserResponseDto createUser(UserRequestDto userResource) {
         if (userRepository.existsByEmail(userResource.getEmail())) {
