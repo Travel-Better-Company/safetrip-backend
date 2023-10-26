@@ -18,7 +18,7 @@ public class Users {
     private String name;
     private String email;
     private String password;
-    private int followersCount;
+    private Long followersCount;
     @ElementCollection
     private List<Long> followersIds;
 }

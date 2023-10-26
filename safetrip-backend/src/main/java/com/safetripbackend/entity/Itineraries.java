@@ -16,7 +16,7 @@ public class Itineraries {
     // Atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
     private LocalDate ini_date;
     private LocalDate end_date;

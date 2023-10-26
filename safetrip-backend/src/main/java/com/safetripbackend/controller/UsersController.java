@@ -16,7 +16,7 @@ import java.util.List;
 import com.safetripbackend.repository.UserRepository;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UsersController {
 
@@ -31,6 +31,11 @@ public class UsersController {
         return new ResponseEntity<>(responseResource, HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<UserResponseDto>> getAllItineraries() {
+        List<UserResponseDto> itineraryResponseResource = userService.getAllUsers();
+        return new ResponseEntity<>(itineraryResponseResource, HttpStatus.OK);
+    }
     @PostMapping("/{followerId}/follow/{followedId}")
     public Users followUser(@PathVariable("followerId") Long followerId, @PathVariable("followedId") Long followedId) {
         Users follower = userRepository.findById(followerId).orElse(null);
@@ -49,9 +54,5 @@ public class UsersController {
         }
         return follower;
     }
-    @GetMapping("/all")
-    public List<Users> getAllUsers() {
-        List<Users> allUsers = userRepository.findAll();
-        return allUsers;
-    }
+
 }

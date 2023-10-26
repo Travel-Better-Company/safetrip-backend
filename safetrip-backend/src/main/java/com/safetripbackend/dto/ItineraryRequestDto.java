@@ -15,7 +15,7 @@ public class ItineraryRequestDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate end_date;
     @NotNull(message = "El id del usuario no debe ser null")
-    private int id_user;
+    private Long id_user;
     @NotNull(message = "El id de la ciudad no debe ser null")
-    private int id_city;
+    private Long id_city;
 }

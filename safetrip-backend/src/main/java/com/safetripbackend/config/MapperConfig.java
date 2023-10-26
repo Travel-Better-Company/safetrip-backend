@@ -1,4 +1,4 @@
-package com.safetripbackend.followers.config;
+package com.safetripbackend.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

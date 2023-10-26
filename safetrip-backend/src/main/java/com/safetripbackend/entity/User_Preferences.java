@@ -13,7 +13,7 @@ import org.apache.catalina.User;
 public class User_Preferences {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @OneToOne
     @JoinColumn(name = "id_user")
     private Users users;

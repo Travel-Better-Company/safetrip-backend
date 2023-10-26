@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Data
 public class ItineraryResponseDto {
-    private int id;
+    private Long id;
     private String name;
     private LocalDate ini_date;
     private LocalDate end_date;

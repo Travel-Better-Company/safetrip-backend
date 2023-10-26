@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Activities {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
     private LocalDate  iniDate;
