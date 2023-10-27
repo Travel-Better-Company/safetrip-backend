@@ -12,6 +12,6 @@ public class ItineraryResponseDto {
     private String name;
     private LocalDate ini_date;
     private LocalDate end_date;
-    private Users user;
-    private Cities city;
+    private UserResponseDto user;
+    private CityResponseDto city;
 }

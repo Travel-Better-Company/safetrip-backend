@@ -18,7 +18,10 @@ public class ItineraryController {
 
     @PostMapping
     public ResponseEntity<ItineraryResponseDto> createItinerary(@Valid @RequestBody ItineraryRequestDto itineraryResource) {
-        ItineraryResponseDto responseResource = itineraryService.createItinerary(itineraryResource);
+        ItineraryResponseDto responseResource = itineraryService.createItinerary(
+                itineraryResource.getUserId(),
+                itineraryResource.getCityId(),
+                itineraryResource);
         return new ResponseEntity<>(responseResource, HttpStatus.CREATED);
     }
 
@@ -32,7 +35,11 @@ public class ItineraryController {
     public ResponseEntity<ItineraryResponseDto> updateItinerary(
             @PathVariable Long itineraryId,
             @Valid @RequestBody ItineraryRequestDto itineraryResource) {
-        ItineraryResponseDto itineraryResponseResource = itineraryService.updateItinerary(itineraryId, itineraryResource);
+        ItineraryResponseDto itineraryResponseResource = itineraryService.updateItinerary(
+                itineraryId,
+                itineraryResource.getUserId(),
+                itineraryResource.getCityId(),
+                itineraryResource);
         return new ResponseEntity<>(itineraryResponseResource, HttpStatus.OK);
     }
 

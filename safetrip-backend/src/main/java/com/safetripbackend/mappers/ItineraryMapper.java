@@ -11,7 +11,6 @@ public class ItineraryMapper {
     private final ModelMapper modelMapper;
     public ItineraryMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
-
     }
 
     public Itineraries resourceToEntity(ItineraryRequestDto itinerarieRequestDto){
