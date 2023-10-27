@@ -97,4 +97,25 @@ public class ItineraryService {
 
         return itineraryMapper.entityListToResponseResourceList(matchingItineraries);
     }
+
+    //En proceso
+    @Transactional
+    public Itineraries shareItinerary(long id_user_origin,long id_user_target, long id_city, SharingRequestDto sharingRequest) {
+        Optional<Users> user_send = userRepository.findById(id_user_origin); //lo dejo en caso de que sea necesitado
+
+        Optional<Users> user_target = Optional.ofNullable(userRepository.findById(id_user_target)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + id_user_target)));
+
+        Optional<Itineraries> optionalItinerary = itineraryRepository.findById(sharingRequest.getId_itinerary());
+        //Clonando un itinerario para que lo tenga otro usuario
+        ItineraryRequestDto itinerary_req = new ItineraryRequestDto();
+        itinerary_req.setName(itinerary_req.getName()); //EN PROCESO: adquirir los gets
+        itinerary_req.setIni_date(itinerary_req.getIni_date()); //aqui se deben de hacer gets para los itinerarios, ya que son privados
+        itinerary_req.setEnd_date(itinerary_req.getEnd_date());
+        itinerary_req.setCityId(id_city);
+        itinerary_req.setUserId(id_user_target);
+
+        createItinerary(id_user_target, id_city, itinerary_req);
+        return itineraryMapper.resourceToEntity(itinerary_req);
+    }
 }
