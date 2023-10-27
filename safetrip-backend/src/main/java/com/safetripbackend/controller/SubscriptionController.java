@@ -1,64 +1,52 @@
 package com.safetripbackend.controller;
 
-import com.safetripbackend.entity.Subscription;
+import com.safetripbackend.dto.SubscriptionRequestDTO;
+import com.safetripbackend.dto.SubscriptionResponseDTO;
 import com.safetripbackend.exception.ResourceAlreadyExistsException;
 import com.safetripbackend.service.SubscriptionService;
-
-import org.springframework.web.bind.annotation.*;
+import com.safetripbackend.entity.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/subscriptions")
+@RequestMapping("/api/v1/subscriptions")
 public class SubscriptionController {
 
+    private final SubscriptionService subscriptionService;
+
     @Autowired
-    private SubscriptionService subscriptionService;
+    public SubscriptionController(SubscriptionService subscriptionService) {
+        this.subscriptionService = subscriptionService;
+    }
 
     @PostMapping
-    public ResponseEntity<Subscription> createSubscription(@RequestBody Subscription subscription) throws ResourceAlreadyExistsException {
-        Subscription createdSubscription = subscriptionService.createSubscription(subscription);
-        return ResponseEntity.ok(createdSubscription);
+    public ResponseEntity<SubscriptionResponseDTO> createSubscription(@RequestBody SubscriptionRequestDTO requestDTO) {
+        try {
+            SubscriptionResponseDTO responseDTO = subscriptionService.createSubscription(requestDTO);
+            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+        } catch (ResourceAlreadyExistsException ex) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Subscription> getSubscription(@PathVariable Long id) {
-        Subscription subscription = subscriptionService.getSubscriptionById(id);
-        if (subscription != null) {
-            return ResponseEntity.ok(subscription);
+    public ResponseEntity<SubscriptionResponseDTO> getSubscription(@PathVariable Long id) {
+        SubscriptionResponseDTO responseDTO = subscriptionService.getSubscriptionById(id);
+        if (responseDTO != null) {
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<Subscription>> getAllSubscriptions() {
-        List<Subscription> subscriptions = subscriptionService.getAllSubscriptions();
-        return ResponseEntity.ok(subscriptions);
+    public ResponseEntity<List<SubscriptionResponseDTO>> getAllSubscriptions() {
+        List<SubscriptionResponseDTO> responseDTOs = subscriptionService.getAllSubscriptions();
+        return new ResponseEntity<>(responseDTOs, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Subscription> updateSubscription(@PathVariable Long id, @RequestBody Subscription updatedSubscription) {
-        Subscription subscription = subscriptionService.getSubscriptionById(id);
-        if (subscription != null) {
-            updatedSubscription.setId(id);
-            Subscription updated = subscriptionService.updateSubscription(updatedSubscription);
-            return ResponseEntity.ok(updated);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSubscription(@PathVariable Long id) {
-        Subscription subscription = subscriptionService.getSubscriptionById(id);
-        if (subscription != null) {
-            subscriptionService.deleteSubscription(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }

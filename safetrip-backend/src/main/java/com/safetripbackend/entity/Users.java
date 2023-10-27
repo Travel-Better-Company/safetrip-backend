@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import java.util.List;
 
@@ -21,4 +23,8 @@ public class Users {
     private Long followersCount;
     @ElementCollection
     private List<Long> followersIds;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Subscription subscription;
 }

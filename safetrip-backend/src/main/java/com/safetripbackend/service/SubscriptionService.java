@@ -1,42 +1,61 @@
 package com.safetripbackend.service;
 
-
+import com.safetripbackend.dto.SubscriptionRequestDTO;
+import com.safetripbackend.dto.SubscriptionResponseDTO;
+import com.safetripbackend.repository.UserRepository;
 import com.safetripbackend.entity.Subscription;
+import com.safetripbackend.entity.Users;
 import com.safetripbackend.exception.ResourceAlreadyExistsException;
 import com.safetripbackend.repository.SubscriptionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.stream.Collectors;
+
 
 import java.util.List;
 
 @Service
 public class SubscriptionService {
+
     @Autowired
     private SubscriptionRepository subscriptionRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public Subscription createSubscription(Subscription subscription) throws ResourceAlreadyExistsException {
-        Subscription existingSubscription = subscriptionRepository.findByUserId(subscription.getUserId());
-        if (existingSubscription != null) {
-            throw new ResourceAlreadyExistsException("La suscripción ya existe para el usuario: " + subscription.getUserId());
+    public boolean existsSubscription(Long subscriptionId) {
+        return subscriptionRepository.existsById(subscriptionId);
+    }
+    public SubscriptionResponseDTO createSubscription(SubscriptionRequestDTO requestDTO) {
+        Subscription subscription = new Subscription();
+        subscription.setUser(userRepository.findById(requestDTO.getUserId()).orElse(null));
+        subscription.setStartDate(requestDTO.getStartDate());
+        subscription.setEndDate(requestDTO.getEndDate());
+        Subscription savedSubscription = subscriptionRepository.save(subscription);
+        return mapToResponseDTO(savedSubscription);
+    }
+
+    public SubscriptionResponseDTO getSubscriptionById(Long subscriptionId) {
+        Subscription subscription = subscriptionRepository.findById(subscriptionId).orElse(null);
+        if (subscription != null) {
+            return mapToResponseDTO(subscription);
         }
-
-        return subscriptionRepository.save(subscription);
+        return null;
     }
 
-    public Subscription getSubscriptionById(Long id) {
-        return subscriptionRepository.findById(id);
+    public List<SubscriptionResponseDTO> getAllSubscriptions() {
+        List<Subscription> subscriptions = subscriptionRepository.findAll();
+        return subscriptions.stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
     }
 
-    public List<Subscription> getAllSubscriptions() {
-        return subscriptionRepository.findAll();
-    }
-
-    public void deleteSubscription(Long id) {
-        subscriptionRepository.delete(id);
-    }
-
-    public Subscription updateSubscription(Subscription updatedSubscription) {
-        return updatedSubscription;
+    private SubscriptionResponseDTO mapToResponseDTO(Subscription subscription) {
+        SubscriptionResponseDTO responseDTO = new SubscriptionResponseDTO();
+        responseDTO.setId(subscription.getId());
+        responseDTO.setUserId(subscription.getUser().getId());
+        responseDTO.setStartDate(subscription.getStartDate());
+        responseDTO.setEndDate(subscription.getEndDate());
+        return responseDTO;
     }
 }

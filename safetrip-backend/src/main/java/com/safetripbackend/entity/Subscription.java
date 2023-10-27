@@ -1,9 +1,11 @@
 package com.safetripbackend.entity;
 
+import com.safetripbackend.entity.Users;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+
 
 @Getter
 @Entity
@@ -12,8 +14,9 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String userId;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Users user;
 
     @Column(nullable = false)
     private LocalDateTime startDate;
@@ -25,8 +28,8 @@ public class Subscription {
         this.id = id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     public void setStartDate(LocalDateTime startDate) {

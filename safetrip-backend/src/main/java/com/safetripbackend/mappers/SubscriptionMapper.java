@@ -1,27 +1,19 @@
 package com.safetripbackend.mappers;
-import com.safetripbackend.dto.SubscriptionDto;
 import com.safetripbackend.entity.Subscription;
-
+import com.safetripbackend.dto.SubscriptionRequestDTO;
+import com.safetripbackend.dto.SubscriptionResponseDTO;
 import jakarta.inject.Named;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Named
-public class SubscriptionMapper {
+@Mapper(componentModel = "spring")
+public interface SubscriptionMapper {
 
-    public SubscriptionDto mapToDto(Subscription subscription) {
-        SubscriptionDto dto = new SubscriptionDto();
-        dto.setId(subscription.getId());
-        dto.setUserId(subscription.getUserId());
-        dto.setStartDate(subscription.getStartDate());
-        dto.setEndDate(subscription.getEndDate());
-        return dto;
-    }
+    @Mapping(source = "user.id", target = "userId")
+    SubscriptionResponseDTO subscriptionToSubscriptionResponseDTO(Subscription subscription);
 
-    public Subscription mapToEntity(SubscriptionDto dto) {
-        Subscription subscription = new Subscription();
-        subscription.setId(dto.getId());
-        subscription.setUserId(dto.getUserId());
-        subscription.setStartDate(dto.getStartDate());
-        subscription.setEndDate(dto.getEndDate());
-        return subscription;
-    }
+    Subscription subscriptionRequestDTOToSubscription(SubscriptionRequestDTO requestDTO);
+
+    @Mapping(source = "userId", target = "user.id")
+    Subscription subscriptionResponseDTOToSubscription(SubscriptionResponseDTO responseDTO);
 }
