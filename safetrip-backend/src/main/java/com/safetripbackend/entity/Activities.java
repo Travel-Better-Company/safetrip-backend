@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -17,8 +19,8 @@ public class Activities {
 
     private String name;
     private LocalDate  iniDate;
-    private LocalDate  endDate;
-
+    private LocalTime startTime;
+    private LocalTime endTime;
     @ManyToOne
     @JoinColumn(name = "id_itinerario")
     private Itineraries itinerary;

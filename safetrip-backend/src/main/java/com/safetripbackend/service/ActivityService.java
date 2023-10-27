@@ -8,6 +8,7 @@ import com.safetripbackend.exception.ResourceNotFoundException;
 import com.safetripbackend.mappers.ActivityMapper;
 import com.safetripbackend.repository.ActivityRepository;
 
+import com.safetripbackend.repository.ItineraryRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -23,19 +24,12 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
     private final ActivityMapper activityMapper;
-
-    public List<ActivityResponseDto> getAllActivities() {
-        List<Activities> activities1 = activityRepository.findAll();
-        return activityMapper.entityListToResponseResourceList(activities1);
-    }
-    public ActivityResponseDto getActivityById(Long activityId) {
-        Activities activity = activityRepository.findById(activityId)
-                .orElseThrow(() -> new ResourceNotFoundException("Activity not found with id: " + activityId));
-        return activityMapper.entityToResponseResource(activity);
-    }
-
+    private final ItineraryRepository itineraryRepository;
     @Transactional
     public ActivityResponseDto createActivity(ActivityRequestDto activityResource) {
+        // Validar el id_itinerary
+        validateItineraryId(activityResource.getId_itinerary());
+
         if (activityRepository.existsByNameAndIniDate(activityResource.getName(), activityResource.getIniDate())) {
             throw new ResourceAlreadyExistsException("Actividad con el mismo nombre y fecha inicial ya existe");
         }
@@ -52,9 +46,13 @@ public class ActivityService {
         if (optionalActivity.isPresent()) {
             Activities activity = optionalActivity.get();
 
+            // Validar el id_itinerary
+            validateItineraryId(activityResource.getId_itinerary());
+
             activity.setName(activityResource.getName());
             activity.setIniDate(activityResource.getIniDate());
-            activity.setEndDate(activityResource.getEndDate());
+            activity.setStartTime(activityResource.getStartTime());
+            activity.setEndTime(activityResource.getEndTime());
 
             activity = activityRepository.save(activity);
             return activityMapper.entityToResponseResource(activity);
@@ -62,6 +60,7 @@ public class ActivityService {
             throw new ResourceNotFoundException("Actividad con ese id no existe: " + activityId);
         }
     }
+
     @Transactional
     public void deleteActivity(Long activityId) {
         if (!activityRepository.existsById(activityId)) {
@@ -69,13 +68,19 @@ public class ActivityService {
         }
         activityRepository.deleteById(activityId);
     }
-
-
-    public List<Activities> findActivitiesByName(String activityName) {
-        return activityRepository.findActivitiesByName(activityName);
+    public void validateItineraryId(Long itineraryId) {
+        if (!itineraryRepository.existsById(itineraryId)) {
+            throw new IllegalArgumentException("El id de itinerary no es válido: " + itineraryId);
+        }
     }
-    public Optional<Activities> findActivityById(Long id) {
-        return activityRepository.findById(id);
+    public List<ActivityResponseDto> getAllActivitiesByItineraryId(Long itineraryId) {
+        List<Activities> activities = activityRepository.findByItineraryId(itineraryId); // Suponiendo que tienes un método findByItineraryId en tu ActivityRepository
+        return activityMapper.entityListToResponseResourceList(activities);
     }
+    public List<ActivityResponseDto> findActivitiesByName(String activityName) {
+        List<Activities> activities = activityRepository.findActivitiesByName(activityName);
+        return activityMapper.entityListToResponseResourceList(activities);
+    }
+
 
 }

@@ -22,17 +22,6 @@ public class ActivityController {
         ActivityResponseDto responseResource = activityService.createActivity(activityResource);
         return new ResponseEntity<>(responseResource, HttpStatus.CREATED);
     }
-    @GetMapping("/{activityId}")
-    public ResponseEntity<ActivityResponseDto> getActivityById(@PathVariable Long activityId) {
-        ActivityResponseDto activityResponseResource = activityService.getActivityById(activityId);
-        return new ResponseEntity<>(activityResponseResource, HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<ActivityResponseDto>> getAllActivities() {
-        List<ActivityResponseDto> activityResponseResource = activityService.getAllActivities();
-        return new ResponseEntity<>(activityResponseResource, HttpStatus.OK);
-    }
 
     @PutMapping("/{activityId}")
     public ResponseEntity<ActivityResponseDto> updateActivity(
@@ -47,4 +36,10 @@ public class ActivityController {
         activityService.deleteActivity(activityId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    @GetMapping("/itinerary/{itineraryId}/activities")
+    public ResponseEntity<List<ActivityResponseDto>> getAllActivitiesByItineraryId(@PathVariable Long itineraryId) {
+        List<ActivityResponseDto> activityResponseResource = activityService.getAllActivitiesByItineraryId(itineraryId);
+        return new ResponseEntity<>(activityResponseResource, HttpStatus.OK);
+    }
+
 }
