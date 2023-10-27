@@ -19,4 +19,7 @@ public class Cities {
 
     @ElementCollection
     private List<String> sights;
+    public Cities(Long id) {
+        this.id = id;
+    }
 }
