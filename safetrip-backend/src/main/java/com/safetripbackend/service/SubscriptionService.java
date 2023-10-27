@@ -4,8 +4,6 @@ import com.safetripbackend.dto.SubscriptionRequestDTO;
 import com.safetripbackend.dto.SubscriptionResponseDTO;
 import com.safetripbackend.repository.UserRepository;
 import com.safetripbackend.entity.Subscription;
-import com.safetripbackend.entity.Users;
-import com.safetripbackend.exception.ResourceAlreadyExistsException;
 import com.safetripbackend.repository.SubscriptionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

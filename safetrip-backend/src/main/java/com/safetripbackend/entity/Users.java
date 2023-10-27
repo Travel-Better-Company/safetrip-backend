@@ -21,6 +21,7 @@ public class Users {
     private String email;
     private String password;
     private Long followersCount;
+
     @ElementCollection
     private List<Long> followersIds;
 

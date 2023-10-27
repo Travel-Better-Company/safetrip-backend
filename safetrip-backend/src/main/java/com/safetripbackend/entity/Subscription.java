@@ -1,6 +1,6 @@
 package com.safetripbackend.entity;
 
-import com.safetripbackend.entity.Users;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 

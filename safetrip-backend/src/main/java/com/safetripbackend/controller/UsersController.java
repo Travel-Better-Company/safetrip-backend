@@ -7,7 +7,6 @@ import com.safetripbackend.exception.ResourceNotFoundException;
 import com.safetripbackend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.tree.pattern.ParseTreePattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -89,6 +88,7 @@ public class UsersController {
         }
         return follower;
     }
+
     @GetMapping("/followers")
     public List<Users> getAllUsers1() {
         List<Users> allUsers = userRepository.findAll();

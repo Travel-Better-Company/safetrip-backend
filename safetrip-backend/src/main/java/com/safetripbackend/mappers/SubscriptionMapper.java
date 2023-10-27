@@ -2,7 +2,6 @@ package com.safetripbackend.mappers;
 import com.safetripbackend.entity.Subscription;
 import com.safetripbackend.dto.SubscriptionRequestDTO;
 import com.safetripbackend.dto.SubscriptionResponseDTO;
-import jakarta.inject.Named;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
