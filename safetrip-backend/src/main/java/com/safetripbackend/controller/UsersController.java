@@ -46,7 +46,7 @@ public class UsersController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDto>> getAllItineraries() {
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         List<UserResponseDto> itineraryResponseResource = userService.getAllUsers();
         return new ResponseEntity<>(itineraryResponseResource, HttpStatus.OK);
     }
