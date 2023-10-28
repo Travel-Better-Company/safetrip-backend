@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 public class ActivityRequestDto {
@@ -12,8 +13,13 @@ public class ActivityRequestDto {
     private String name;
     @NotNull(message = "El id del itinerario no debe ser null")
     private Long id_itinerary;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate iniDate;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endDate;
+
+    @JsonFormat(pattern = "HH:mm:ss")
+    private LocalTime startTime; // Hora de inicio
+
+    @JsonFormat(pattern = "HH:mm:ss")
+    private LocalTime endTime; // Hora de fin
 }
