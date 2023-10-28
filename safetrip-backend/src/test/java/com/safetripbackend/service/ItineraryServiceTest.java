@@ -5,6 +5,7 @@ import com.safetripbackend.dto.ItineraryResponseDto;
 import com.safetripbackend.entity.Cities;
 import com.safetripbackend.entity.Itineraries;
 import com.safetripbackend.entity.Users;
+import com.safetripbackend.exception.ValidationExpection;
 import com.safetripbackend.mappers.ItineraryMapper;
 import com.safetripbackend.repository.CityRepository;
 import com.safetripbackend.repository.ItineraryRepository;
@@ -83,19 +84,47 @@ public class ItineraryServiceTest {
         assertEquals(responseDto, result);
     }
     @Test
-    public void testUpdateItinerary(){
+    public void testCreateItineraryConflictWithDates(){
+        //Given (Arrange = preparación)
+        long id_user = 1;
+        long id_city = 1;
+        String ini_date = "2023-11-01";
+        String end_date = "2023-10-10";
+        String name = "Itinerario de testeo";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate idate = LocalDate.parse(ini_date, formatter);
+        LocalDate edate = LocalDate.parse(end_date, formatter);
 
-    }
-    @Test
-    public void testDeleteItinerary(){
+        ItineraryRequestDto itineraryResource = new ItineraryRequestDto();
+        itineraryResource.setName(name);
+        itineraryResource.setIni_date(LocalDate.parse(ini_date,formatter));
+        itineraryResource.setEnd_date(LocalDate.parse(end_date,formatter));
+        itineraryResource.setUserId(id_user);
+        itineraryResource.setCityId(id_city);
 
-    }
-    @Test
-    public void testGetAllItineraries(){
+        Users user = new Users();
+        user.setId(id_user);
 
-    }
-    @Test
-    public void testFindByDestination(){
+        Cities city = new Cities();
+        city.setId(id_city);
 
+        Itineraries itinerary = new Itineraries();
+        itinerary.setName(name);
+        itinerary.setIni_date(idate);
+        itinerary.setEnd_date(edate);
+        itinerary.setUsers(user);
+        itinerary.setCity(city);
+
+        ItineraryResponseDto responseDto = new ItineraryResponseDto();
+
+        when(userRepository.findById(id_user)).thenReturn(Optional.of(user));
+        when(cityRepository.findById(id_city)).thenReturn(Optional.of(city));
+        when(itineraryRepository.existsByName(itineraryResource.getName())).thenReturn(false);
+        when(itineraryMapper.entityToResponseResource(itinerary)).thenReturn(responseDto);
+
+        //Then (Assert - afirmación) y Act
+        assertThrows(ValidationExpection.class,
+                () -> itineraryService.createItinerary(id_user,id_city,itineraryResource));
     }
+
 }
