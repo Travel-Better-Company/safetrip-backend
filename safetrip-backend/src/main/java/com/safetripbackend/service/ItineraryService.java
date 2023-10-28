@@ -6,7 +6,6 @@ import com.safetripbackend.entity.Itineraries;
 import com.safetripbackend.entity.Users;
 import com.safetripbackend.exception.ResourceAlreadyExistsException;
 import com.safetripbackend.exception.ResourceNotFoundException;
-import com.safetripbackend.exception.ValidationExpection;
 import com.safetripbackend.mappers.ItineraryMapper;
 import com.safetripbackend.repository.CityRepository;
 import com.safetripbackend.repository.ItineraryRepository;
@@ -45,10 +44,8 @@ public class ItineraryService {
         itinerary.setName(itineraryResource.getName());
         itinerary.setIni_date(itineraryResource.getIni_date());
         itinerary.setEnd_date(itineraryResource.getEnd_date());
-        validateItinerariesByDateRange(itinerary);
         itinerary.setUsers(user);
         itinerary.setCity(cities);
-
 
         itineraryRepository.save(itinerary);
         return itineraryMapper.entityToResponseResource(itinerary);
@@ -67,7 +64,6 @@ public class ItineraryService {
             itinerary.setName(itineraryResource.getName());
             itinerary.setIni_date(itineraryResource.getIni_date());
             itinerary.setEnd_date(itineraryResource.getEnd_date());
-            validateItinerariesByDateRange(itinerary);
             itinerary.setUsers(user);
             itinerary.setCity(cities);
 
@@ -104,7 +100,7 @@ public class ItineraryService {
 
     //En proceso
     @Transactional
-    public ItineraryResponseDto shareItinerary(long id_user_origin,long id_user_target, long id_itinerary) {
+    public void shareItinerary(long id_user_origin,long id_user_target, long id_itinerary) {
         Optional<Users> user_send = userRepository.findById(id_user_origin); //lo dejo en caso de que sea necesitado
 
         Optional<Users> user_target = Optional.ofNullable(userRepository.findById(id_user_target)
@@ -124,10 +120,5 @@ public class ItineraryService {
         itinerary_req.setUserId(id_user_target);
 
         createItinerary(id_user_target, itinerary_req.getCityId(), itinerary_req);
-        return itineraryMapper.resourceToResponse(itinerary_req);
-    }
-    private void validateItinerariesByDateRange(Itineraries itineraryRequest) {
-        if (itineraryRequest.getEnd_date().isBefore(itineraryRequest.getIni_date()))
-            throw new ValidationExpection("La fecha de fin no debe ser menor a la fecha de inicio");
     }
 }
