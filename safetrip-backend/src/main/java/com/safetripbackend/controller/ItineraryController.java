@@ -59,12 +59,15 @@ public class ItineraryController {
 
 
     @PostMapping("/share")
-    public ResponseEntity<ItineraryResponseDto> share_itinerary
+    public ResponseEntity<SharingResponseDto> share_itinerary
             (@RequestParam long id_itinerary,
              @RequestParam long id_user,
              @RequestParam long id_target) {
 
-        ItineraryResponseDto itineraryResponseResource = itineraryService.shareItinerary(id_user, id_target, id_itinerary);
-        return new ResponseEntity<>(itineraryResponseResource,HttpStatus.OK);
+        itineraryService.shareItinerary(id_user, id_target, id_itinerary);
+        // como es void, solo retornar un mensaje de exito
+        SharingResponseDto itineraryResponseResource = new SharingResponseDto();
+        itineraryResponseResource.setText("Itinerary shared successfully");
+        return new ResponseEntity<>(itineraryResponseResource, HttpStatus.OK);
     }
 }
