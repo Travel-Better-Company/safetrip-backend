@@ -54,39 +54,37 @@ public class UsersController {
 
 
     @PostMapping("/{followerId}/follow/{followedId}")
-    public Users followUser(@PathVariable("followerId") Long followerId, @PathVariable("followedId") Long followedId) {
+    public ResponseEntity<Users> followUser(@PathVariable("followerId") Long followerId, @PathVariable("followedId") Long followedId) {
         Users follower = userRepository.findById(followerId).orElse(null);
         Users followed = userRepository.findById(followedId).orElse(null);
 
         if (follower == null || followed == null) {
-            throw new ResourceNotFoundException("Usuario no encontrado");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Usuario no encontrado
         } else {
-            if (!follower.getFollowersIds().contains(followedId))
-
-            {
+            if (!follower.getFollowersIds().contains(followedId)) {
                 follower.getFollowersIds().add(followedId);
                 follower.setFollowersCount(follower.getFollowersCount() + 1);
                 userRepository.save(follower);
             }
+            return new ResponseEntity<>(follower, HttpStatus.OK);
         }
-        return follower;
     }
 
     @DeleteMapping("/{followerId}/unfollow/{followedId}")
-    public Users unfollowUser(@PathVariable("followerId") Long followerId, @PathVariable("followedId") Long followedId) {
+    public ResponseEntity<Users> unfollowUser(@PathVariable("followerId") Long followerId, @PathVariable("followedId") Long followedId) {
         Users follower = userRepository.findById(followerId).orElse(null);
         Users followed = userRepository.findById(followedId).orElse(null);
 
         if (follower == null || followed == null) {
-            throw new ResourceNotFoundException("Usuario no encontrado");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Usuario no encontrado
         } else {
             if (follower.getFollowersIds().contains(followedId)) {
                 follower.getFollowersIds().remove(followedId);
                 follower.setFollowersCount(follower.getFollowersCount() - 1);
                 userRepository.save(follower);
             }
+            return new ResponseEntity<>(follower, HttpStatus.OK);
         }
-        return follower;
     }
 
     @GetMapping("/followers")
