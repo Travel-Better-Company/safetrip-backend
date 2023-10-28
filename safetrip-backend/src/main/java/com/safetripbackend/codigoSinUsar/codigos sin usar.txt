@@ -1,0 +1,17 @@
+ActitiesRepository
+@Query("SELECT a FROM Activities a WHERE a.iniDate BETWEEN :startTime AND :endTime")
+    List<Activities> findActivitiesInTimeRange(@Param("startTime") LocalDate startTime,@Param("endTime")  LocalDate endTime);
+
+ActivityService
+    public ActivityResponseDto getActivityById(Long activityId) {
+        Activities activity = activityRepository.findById(activityId)
+                .orElseThrow(() -> new ResourceNotFoundException("Activity not found with id: " + activityId));
+        return activityMapper.entityToResponseResource(activity);
+    }
+
+ActivityController
+    @GetMapping("/{activityId}")
+    public ResponseEntity<ActivityResponseDto> getActivityById(@PathVariable Long activityId) {
+        ActivityResponseDto activityResponseResource = activityService.getActivityById(activityId);
+        return new ResponseEntity<>(activityResponseResource, HttpStatus.OK);
+    }
