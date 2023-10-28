@@ -1,6 +1,8 @@
 package com.safetripbackend.controller;
 import com.safetripbackend.dto.ItineraryRequestDto;
 import com.safetripbackend.dto.ItineraryResponseDto;
+import com.safetripbackend.dto.SharingRequestDto;
+import com.safetripbackend.dto.SharingResponseDto;
 import com.safetripbackend.service.ItineraryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +54,17 @@ public class ItineraryController {
     @GetMapping("/find/{location}")
     public ResponseEntity <List<ItineraryResponseDto>> findItinerariesByCity_Location( @PathVariable String location) {
         List<ItineraryResponseDto> itineraryResponseResource = itineraryService.findByDestination(location);
+        return new ResponseEntity<>(itineraryResponseResource,HttpStatus.OK);
+    }
+
+
+    @PostMapping("/share")
+    public ResponseEntity<ItineraryResponseDto> share_itinerary
+            (@RequestParam long id_itinerary,
+             @RequestParam long id_user,
+             @RequestParam long id_target) {
+
+        ItineraryResponseDto itineraryResponseResource = itineraryService.shareItinerary(id_user, id_target, id_itinerary);
         return new ResponseEntity<>(itineraryResponseResource,HttpStatus.OK);
     }
 }
