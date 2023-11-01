@@ -28,7 +28,7 @@ public class UserService {
     @Transactional
     public UserResponseDto createUser(UserRequestDto userResource) {
         if (userRepository.existsByEmail(userResource.getEmail())) {
-            throw new ResourceAlreadyExistsException("El usuario con este email no existe:" + userResource.getEmail());
+            throw new ResourceAlreadyExistsException("El usuario con este email ya existe:" + userResource.getEmail());
         }
 
         Users user = userMapper.resourceToEntity(userResource);

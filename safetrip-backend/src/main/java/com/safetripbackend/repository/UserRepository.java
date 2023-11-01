@@ -5,4 +5,5 @@ import com.safetripbackend.entity.Users;
 
 public interface UserRepository extends JpaRepository<Users, Long> {
     boolean existsByEmail(String email);
+    boolean existsByName(String name);
 }
