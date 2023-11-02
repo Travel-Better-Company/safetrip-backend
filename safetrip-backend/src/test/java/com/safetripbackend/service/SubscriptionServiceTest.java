@@ -1,4 +1,4 @@
-package com.safetripbackend;
+package com.safetripbackend.service;
 
 import com.safetripbackend.dto.SubscriptionRequestDTO;
 import com.safetripbackend.dto.SubscriptionResponseDTO;
@@ -7,15 +7,16 @@ import com.safetripbackend.entity.Subscription;
 import com.safetripbackend.entity.Users;
 import com.safetripbackend.service.SubscriptionService;
 import com.safetripbackend.repository.SubscriptionRepository;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SubscriptionServiceTest {
 
@@ -28,7 +29,7 @@ public class SubscriptionServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    @Before
+    @BeforeEach
     public void init() {
         MockitoAnnotations.initMocks(this);
     }

@@ -6,6 +6,7 @@ import com.safetripbackend.entity.Itineraries;
 import com.safetripbackend.entity.Users;
 import com.safetripbackend.exception.ResourceAlreadyExistsException;
 import com.safetripbackend.exception.ResourceNotFoundException;
+import com.safetripbackend.exception.ValidationExpection;
 import com.safetripbackend.mappers.ItineraryMapper;
 import com.safetripbackend.repository.CityRepository;
 import com.safetripbackend.repository.ItineraryRepository;
@@ -44,6 +45,7 @@ public class ItineraryService {
         itinerary.setName(itineraryResource.getName());
         itinerary.setIni_date(itineraryResource.getIni_date());
         itinerary.setEnd_date(itineraryResource.getEnd_date());
+        validateItinerariesByDateRange(itinerary);
         itinerary.setUsers(user);
         itinerary.setCity(cities);
 
@@ -64,6 +66,7 @@ public class ItineraryService {
             itinerary.setName(itineraryResource.getName());
             itinerary.setIni_date(itineraryResource.getIni_date());
             itinerary.setEnd_date(itineraryResource.getEnd_date());
+            validateItinerariesByDateRange(itinerary);
             itinerary.setUsers(user);
             itinerary.setCity(cities);
 
@@ -121,4 +124,9 @@ public class ItineraryService {
 
         createItinerary(id_user_target, itinerary_req.getCityId(), itinerary_req);
     }
+    private void validateItinerariesByDateRange(Itineraries itineraryRequest) {
+        if (itineraryRequest.getEnd_date().isBefore(itineraryRequest.getIni_date()))
+            throw new ValidationExpection("La fecha de fin no debe ser menor a la fecha de inicio");
+    }
+
 }

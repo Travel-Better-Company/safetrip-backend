@@ -1,4 +1,4 @@
-package com.safetripbackend;
+package com.safetripbackend.service;
 
 import com.safetripbackend.entity.Cities;
 import com.safetripbackend.entity.Flights;
@@ -13,10 +13,14 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyLong;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+//import org.junit.Before;
+//import org.junit.Test;
+//import static org.junit.Assert.assertEquals;
+//import static org.mockito.ArgumentMatchers.anyLong;
 import java.util.Date;
 
 public class FlightsServiceTest {
@@ -27,7 +31,8 @@ public class FlightsServiceTest {
     @Mock
     private FlightsRepository flightsRepository;
 
-    @Before
+    //@Before
+    @BeforeEach
     public void init() {
         MockitoAnnotations.initMocks(this);
     }
