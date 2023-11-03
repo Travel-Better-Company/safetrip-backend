@@ -12,6 +12,6 @@ public class ItineraryResponseDto {
     private String name;
     private LocalDate ini_date;
     private LocalDate end_date;
-    private UserResponseDto user;
+    private UserResponseDto users;//antes era solo "user" por eso no mostraba en el postman
     private CityResponseDto city;
 }

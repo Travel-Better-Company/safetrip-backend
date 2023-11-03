@@ -26,4 +26,5 @@ public class Itineraries {
     @ManyToOne
     @JoinColumn(name = "id_city")
     private Cities city;
+
 }

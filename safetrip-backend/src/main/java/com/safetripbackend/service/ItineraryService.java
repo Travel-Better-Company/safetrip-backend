@@ -38,8 +38,8 @@ public class ItineraryService {
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado con ID: "+id_user));
         Cities cities = cityRepository.findById(id_city)
                 .orElseThrow(()->new ResourceNotFoundException("Ciudad no encontrada con ID: "+id_city));
-        if(itineraryRepository.existsByName(itineraryResource.getName())){
-            throw new ResourceAlreadyExistsException("Itineario con ese nombre ya existe");
+        if(itineraryRepository.existsByNameAndUsers_Id(itineraryResource.getName(), itineraryResource.getUserId())){
+            throw new ResourceAlreadyExistsException("Itinerario con ese nombre ya existe");
         }
         Itineraries itinerary = new Itineraries();
         itinerary.setName(itineraryResource.getName());

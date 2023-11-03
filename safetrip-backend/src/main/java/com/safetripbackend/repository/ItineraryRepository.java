@@ -18,4 +18,6 @@ public interface ItineraryRepository extends JpaRepository<Itineraries, Long> {
 
     boolean existsByName(String name);
 
+    boolean existsByNameAndUsers_Id(String name, long user_id); //Para que se pueda crear un itinerario cno el mismo nombre pero diferente usuario
+
 }
