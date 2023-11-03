@@ -14,6 +14,8 @@ import com.safetripbackend.repository.ItineraryRepository;
 import com.safetripbackend.repository.UserRepository;
 import jakarta.transaction.Transactional;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service
@@ -32,8 +35,17 @@ public class ItineraryService {
     private final ItineraryMapper itineraryMapper;
     private final CityRepository cityRepository;
     private final UserRepository userRepository;
+    private final Validator validator;
+
     @Transactional
     public ItineraryResponseDto createItinerary(long id_user,long id_city, ItineraryRequestDto itineraryResource) {
+        Set<ConstraintViolation<ItineraryRequestDto>> violations = validator.validate(itineraryResource);
+
+        if(!violations.isEmpty()){
+            throw new ValidationExpection("Itinerario",violations);
+        }
+        validateItinerariesByDateRange(itineraryResource);
+
         Users user = userRepository.findById(id_user)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado con ID: "+id_user));
         Cities cities = cityRepository.findById(id_city)
@@ -45,7 +57,6 @@ public class ItineraryService {
         itinerary.setName(itineraryResource.getName());
         itinerary.setIni_date(itineraryResource.getIni_date());
         itinerary.setEnd_date(itineraryResource.getEnd_date());
-        validateItinerariesByDateRange(itinerary);
         itinerary.setUsers(user);
         itinerary.setCity(cities);
 
@@ -58,7 +69,11 @@ public class ItineraryService {
 
         if (optionalItinerary.isPresent()) {
             Itineraries itinerary = optionalItinerary.get();
-
+            Set<ConstraintViolation<ItineraryRequestDto>> violations = validator.validate(itineraryResource);
+            if(!violations.isEmpty()){
+                throw new ValidationExpection("Itinerario",violations);
+            }
+            validateItinerariesByDateRange(itineraryResource);
             Users user = userRepository.findById(id_user)
                     .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado con ID: "+id_user));
             Cities cities = cityRepository.findById(id_city)
@@ -66,7 +81,6 @@ public class ItineraryService {
             itinerary.setName(itineraryResource.getName());
             itinerary.setIni_date(itineraryResource.getIni_date());
             itinerary.setEnd_date(itineraryResource.getEnd_date());
-            validateItinerariesByDateRange(itinerary);
             itinerary.setUsers(user);
             itinerary.setCity(cities);
 
@@ -97,7 +111,8 @@ public class ItineraryService {
                 matchingItineraries.add(itinerary);
             }
         }
-
+        if(matchingItineraries.isEmpty())
+            throw new ResourceNotFoundException("No hay ningún itinerario con esa ciudad ingrresada");
         return itineraryMapper.entityListToResponseResourceList(matchingItineraries);
     }
 
@@ -124,7 +139,7 @@ public class ItineraryService {
 
         createItinerary(id_user_target, itinerary_req.getCityId(), itinerary_req);
     }
-    private void validateItinerariesByDateRange(Itineraries itineraryRequest) {
+    private void validateItinerariesByDateRange(ItineraryRequestDto itineraryRequest) {
         if (itineraryRequest.getEnd_date().isBefore(itineraryRequest.getIni_date()))
             throw new ValidationExpection("La fecha de fin no debe ser menor a la fecha de inicio");
     }

@@ -3,22 +3,16 @@ package com.safetripbackend.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class ErrorResponseDto {
+    private int statusCode;
     private String message;
     private LocalDateTime timestamp;
-    private List<String> validationErrors;
 
-    public ErrorResponseDto(String message, LocalDateTime timestamp){
+    public ErrorResponseDto(int statusCode, String message){
+        this.statusCode = statusCode;
         this.message = message;
-        this.timestamp = timestamp;
-    }
-
-    public ErrorResponseDto(String message, LocalDateTime timestamp,List<String> validationErrors){
-        this.message = message;
-        this.timestamp = timestamp;
-        this.validationErrors = validationErrors;
+        this.timestamp = LocalDateTime.now();
     }
 }
