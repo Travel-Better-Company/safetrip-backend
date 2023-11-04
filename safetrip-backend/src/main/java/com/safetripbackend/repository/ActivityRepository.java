@@ -13,7 +13,6 @@ import java.util.List;
 public interface ActivityRepository extends JpaRepository<Activities, Long> {
     boolean existsByNameAndIniDate(String name, LocalDate iniDate);
 
-    List<Activities> findActivitiesByName(String name);
-
     List<Activities> findByItineraryId(Long itineraryId);
+    List<Activities> findActivitiesByItinerary_Id(Long itineraryId);
 }

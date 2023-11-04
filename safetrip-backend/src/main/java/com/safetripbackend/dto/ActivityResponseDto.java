@@ -4,6 +4,7 @@ import com.safetripbackend.entity.Itineraries;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 public class ActivityResponseDto {
@@ -11,6 +12,7 @@ public class ActivityResponseDto {
     private Itineraries itineraries;
     private String name;
     private LocalDate iniDate;
-    private LocalDate endDate;
+    private LocalTime startTime;
+    private LocalTime endTime;
 }
 

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class ActivityService {
         }
 
         Activities activity = activityMapper.resourceToEntity(activityResource);
-        activity = activityRepository.save(activity);
+        activity=activityRepository.save(activity);
 
         return activityMapper.entityToResponseResource(activity);
     }
@@ -73,12 +74,21 @@ public class ActivityService {
             throw new IllegalArgumentException("El id de itinerary no es válido: " + itineraryId);
         }
     }
-    public List<ActivityResponseDto> getAllActivitiesByItineraryId(Long itineraryId) {
-        List<Activities> activities = activityRepository.findByItineraryId(itineraryId); // Suponiendo que tienes un método findByItineraryId en tu ActivityRepository
-        return activityMapper.entityListToResponseResourceList(activities);
+    public List<ActivityResponseDto> getActivitiesByItineraryId(Long itineraryId) {
+        List<Activities> activities = activityRepository.findAll();
+        List<Activities> machtingActivities=new ArrayList<>();
+        for (Activities activity : activities) {
+            if(activity.getItinerary().getId().equals(itineraryId)){
+                machtingActivities.add(activity);
+            }
+        }
+        if(machtingActivities.isEmpty())
+            throw new ResourceNotFoundException("No hay ningúna actividad con ese ID de itinerario ingresado");
+        return activityMapper.entityListToResponseResourceList(machtingActivities);
     }
-    public List<ActivityResponseDto> findActivitiesByName(String activityName) {
-        List<Activities> activities = activityRepository.findActivitiesByName(activityName);
+
+    public List<ActivityResponseDto> getAllActivities(){
+        List<Activities> activities=activityRepository.findAll();
         return activityMapper.entityListToResponseResourceList(activities);
     }
 

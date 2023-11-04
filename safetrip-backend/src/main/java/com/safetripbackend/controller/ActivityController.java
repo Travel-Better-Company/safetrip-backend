@@ -36,10 +36,15 @@ public class ActivityController {
         activityService.deleteActivity(activityId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @GetMapping("/itinerary/{itineraryId}/activities")
-    public ResponseEntity<List<ActivityResponseDto>> getAllActivitiesByItineraryId(@PathVariable Long itineraryId) {
-        List<ActivityResponseDto> activityResponseResource = activityService.getAllActivitiesByItineraryId(itineraryId);
+    @GetMapping("/{itineraryId}")
+    public ResponseEntity<List<ActivityResponseDto>> getActivitiesByItineraryId(@PathVariable Long itineraryId) {
+        List<ActivityResponseDto> activityResponseResource = activityService.getActivitiesByItineraryId(itineraryId);
         return new ResponseEntity<>(activityResponseResource, HttpStatus.OK);
     }
 
+    @GetMapping
+    public ResponseEntity<List<ActivityResponseDto>> getAllActivities(){
+        List<ActivityResponseDto> activityResponseResource = activityService.getAllActivities();
+        return new ResponseEntity<>(activityResponseResource, HttpStatus.OK);
+    }
 }
