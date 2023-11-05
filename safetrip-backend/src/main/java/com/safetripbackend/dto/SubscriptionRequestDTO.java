@@ -1,23 +1,16 @@
 package com.safetripbackend.dto;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-@Getter
+@Data
 public class SubscriptionRequestDTO {
+    @NotNull(message = "El id del usuario no debe ser null")
     private Long userId;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
 }

@@ -1,28 +1,14 @@
 package com.safetripbackend.dto;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.safetripbackend.entity.Users;
+import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-@Getter
+@Data
 public class SubscriptionResponseDTO {
     private Long id;
-    private Long userId;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
+    private Users user_register;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }
