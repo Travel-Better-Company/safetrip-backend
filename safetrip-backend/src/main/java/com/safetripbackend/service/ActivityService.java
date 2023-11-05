@@ -3,6 +3,7 @@ package com.safetripbackend.service;
 import com.safetripbackend.dto.ActivityRequestDto;
 import com.safetripbackend.dto.ActivityResponseDto;
 import com.safetripbackend.entity.Activities;
+import com.safetripbackend.entity.Itineraries;
 import com.safetripbackend.exception.ResourceAlreadyExistsException;
 import com.safetripbackend.exception.ResourceNotFoundException;
 import com.safetripbackend.mappers.ActivityMapper;
@@ -28,14 +29,22 @@ public class ActivityService {
     private final ItineraryRepository itineraryRepository;
     @Transactional
     public ActivityResponseDto createActivity(ActivityRequestDto activityResource) {
-        // Validar el id_itinerary
-        validateItineraryId(activityResource.getId_itinerary());
+        // Validar el id_itinerary y guardando este mismo
+        long id_itinerary = activityResource.getId_itinerary();
+        Itineraries itinerary = itineraryRepository.findById(id_itinerary)
+                .orElseThrow(()->new ResourceNotFoundException("El itinerario con este Id no existe:" + id_itinerary));
 
+        //Verificando que so existe ya una suscripción con ese nombre y fecha de inicio
         if (activityRepository.existsByNameAndIniDate(activityResource.getName(), activityResource.getIniDate())) {
             throw new ResourceAlreadyExistsException("Actividad con el mismo nombre y fecha inicial ya existe");
         }
+        Activities activity = new Activities();
+        activity.setName(activityResource.getName());
+        activity.setStartTime(activityResource.getStartTime());
+        activity.setIniDate(activityResource.getIniDate());
+        activity.setEndTime(activityResource.getEndTime());
+        activity.setItinerary(itinerary);
 
-        Activities activity = activityMapper.resourceToEntity(activityResource);
         activity=activityRepository.save(activity);
 
         return activityMapper.entityToResponseResource(activity);
@@ -48,13 +57,16 @@ public class ActivityService {
             Activities activity = optionalActivity.get();
 
             // Validar el id_itinerary
-            validateItineraryId(activityResource.getId_itinerary());
+
+            long id_itinerary = activityResource.getId_itinerary();
+            Itineraries itinerary = itineraryRepository.findById(id_itinerary)
+                    .orElseThrow(()->new ResourceNotFoundException("El itinerario con este Id no existe:" + id_itinerary));
 
             activity.setName(activityResource.getName());
             activity.setIniDate(activityResource.getIniDate());
             activity.setStartTime(activityResource.getStartTime());
             activity.setEndTime(activityResource.getEndTime());
-
+            activity.setItinerary(itinerary);
             activity = activityRepository.save(activity);
             return activityMapper.entityToResponseResource(activity);
         } else {
@@ -68,11 +80,6 @@ public class ActivityService {
             throw new ResourceNotFoundException("Actividad con ese id no existe: " + activityId);
         }
         activityRepository.deleteById(activityId);
-    }
-    public void validateItineraryId(Long itineraryId) {
-        if (!itineraryRepository.existsById(itineraryId)) {
-            throw new IllegalArgumentException("El id de itinerary no es válido: " + itineraryId);
-        }
     }
     public List<ActivityResponseDto> getActivitiesByItineraryId(Long itineraryId) {
         List<Activities> activities = activityRepository.findAll();
