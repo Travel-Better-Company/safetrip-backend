@@ -4,6 +4,7 @@ import com.safetripbackend.dto.SubscriptionRequestDTO;
 import com.safetripbackend.dto.SubscriptionResponseDTO;
 import com.safetripbackend.exception.ResourceAlreadyExistsException;
 import com.safetripbackend.service.SubscriptionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,12 @@ public class SubscriptionController {
     }
 
     @PostMapping
-    public ResponseEntity<SubscriptionResponseDTO> createSubscription(@RequestBody SubscriptionRequestDTO requestDTO) {
+    public ResponseEntity<SubscriptionResponseDTO> createSubscription(@RequestBody @Valid SubscriptionRequestDTO requestDTO) {
         try {
             SubscriptionResponseDTO responseDTO = subscriptionService.createSubscription(requestDTO);
             return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
         } catch (ResourceAlreadyExistsException ex) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -40,6 +41,12 @@ public class SubscriptionController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @DeleteMapping("/delete/{subscriptionId}")
+    public ResponseEntity<Void> deleteSubscription(@PathVariable Long subscriptionId) {
+        subscriptionService.deleteSubscription(subscriptionId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping
