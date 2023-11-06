@@ -1,6 +1,7 @@
 package com.safetripbackend.service;
 
 import com.safetripbackend.dto.*;
+import com.safetripbackend.entity.Activities;
 import com.safetripbackend.entity.Cities;
 import com.safetripbackend.entity.Itineraries;
 import com.safetripbackend.entity.Users;
@@ -36,6 +37,7 @@ public class ItineraryService {
     private final CityRepository cityRepository;
     private final UserRepository userRepository;
     private final Validator validator;
+    private final ActivityService activityService;
 
     @Transactional
     public ItineraryResponseDto createItinerary(long id_user,long id_city, ItineraryRequestDto itineraryResource) {
@@ -96,7 +98,17 @@ public class ItineraryService {
         if (!itineraryRepository.existsById(itineraryId)) {
             throw new ResourceNotFoundException("Itinerario con ese id no existe"+itineraryId);
         }
-
+        //Con esto se eliminarn las actividades asociadas al itinerario, porque sino no se podría eliminar el itinerario ya que tienen una relacion con FK
+        List<ActivityResponseDto> activities = activityService.getAllActivities();
+        List<Long> idsActToDelete = new ArrayList<>();
+        for( ActivityResponseDto activity: activities){
+            if(activity.getItinerary().getId().equals(itineraryId)){
+                idsActToDelete.add(activity.getId());
+            }
+        }
+        for(Long  id:idsActToDelete ){
+            activityService.deleteActivity(id);
+        }
         itineraryRepository.deleteById(itineraryId);
     }
     public List<ItineraryResponseDto> getAllItinerary() {

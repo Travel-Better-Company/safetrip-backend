@@ -1,5 +1,6 @@
 package com.safetripbackend.service;
 
+import com.safetripbackend.dto.ItineraryResponseDto;
 import com.safetripbackend.dto.UserRequestDto;
 import com.safetripbackend.dto.UserResponseDto;
 import com.safetripbackend.entity.Users;
@@ -11,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +21,7 @@ import java.util.Optional;
 public class UserService {
     public final UserRepository userRepository;
     public final UserMapper userMapper;
-
+    public final ItineraryService itineraryService;
     public List<UserResponseDto> getAllUsers() {
         List<Users> users = userRepository.findAll();
         return userMapper.entityListToResponseResourceList(users);
@@ -60,7 +62,17 @@ public class UserService {
         if (!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException("Usuario con este id no exist: " + userId);
         }
-
+        //Con esto se eliminarn los itinerarios asociados a este user
+        List<ItineraryResponseDto> itinerarios =   itineraryService.getAllItinerary();
+        List<Long> idItinerariesToDelete = new ArrayList<>();
+        for(ItineraryResponseDto itinerary:  itinerarios){
+            if (itinerary.getUsers().getId().equals(userId)){
+                idItinerariesToDelete.add(itinerary.getId());
+            }
+        }
+        for(Long id:idItinerariesToDelete ){
+            itineraryService.deleteItinerary(id);
+        }
         userRepository.deleteById(userId);
     }
 }
