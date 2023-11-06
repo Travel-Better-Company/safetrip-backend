@@ -1,4 +1,5 @@
 package com.safetripbackend.service;
+import com.safetripbackend.dto.SharingRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,15 +30,18 @@ public class SharingServiceTests {
     public void testShareItinerary() {
         // Parametros input
         long id_itinerary = 1;
-        long id_user = 2;
+        long id_user = 5;
         long id_target = 3;
 
         // Creando Mock
-        SharingResponseDto mockResponse = new SharingResponseDto();
-        mockResponse.setText("Itinerary shared successfully");
+        SharingRequestDto mockRequest = new SharingRequestDto();
+        mockRequest.setId_user_origin(id_target);
+        mockRequest.setId_user_target(id_user);
+        mockRequest.setId_itinerary(id_itinerary);
+        mockRequest.setText("Itinerary compartido exitosamente");
 
         // mock de servicio
-        ResponseEntity<SharingResponseDto> response = mockController.share_itinerary(id_itinerary, id_user, id_target);
+        ResponseEntity<SharingResponseDto> response = mockController.share_itinerary(mockRequest);
 
         // assert response
         assert response.getStatusCode().equals(HttpStatus.OK);
