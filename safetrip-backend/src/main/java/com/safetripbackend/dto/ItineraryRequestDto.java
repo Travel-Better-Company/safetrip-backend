@@ -10,9 +10,9 @@ import java.time.LocalDate;
 public class ItineraryRequestDto {
     @Size(max = 50, message = "El nombre del itinerario no debe exceder los 50 caracteres")
     private String name;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate ini_date;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate end_date;
     @NotNull(message = "El id del usuario no debe ser null")
     private Long userId;

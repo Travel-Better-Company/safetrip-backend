@@ -9,8 +9,8 @@ import java.time.LocalDate;
 public class SubscriptionRequestDTO {
     @NotNull(message = "El id del usuario no debe ser null")
     private Long userId;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate startDate;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate endDate;
 }
