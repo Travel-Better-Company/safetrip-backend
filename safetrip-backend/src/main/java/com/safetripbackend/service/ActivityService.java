@@ -2,10 +2,12 @@ package com.safetripbackend.service;
 
 import com.safetripbackend.dto.ActivityRequestDto;
 import com.safetripbackend.dto.ActivityResponseDto;
+import com.safetripbackend.dto.ItineraryRequestDto;
 import com.safetripbackend.entity.Activities;
 import com.safetripbackend.entity.Itineraries;
 import com.safetripbackend.exception.ResourceAlreadyExistsException;
 import com.safetripbackend.exception.ResourceNotFoundException;
+import com.safetripbackend.exception.ValidationExpection;
 import com.safetripbackend.mappers.ActivityMapper;
 import com.safetripbackend.repository.ActivityRepository;
 
@@ -33,8 +35,8 @@ public class ActivityService {
         long id_itinerary = activityResource.getId_itinerary();
         Itineraries itinerary = itineraryRepository.findById(id_itinerary)
                 .orElseThrow(()->new ResourceNotFoundException("El itinerario con este Id no existe:" + id_itinerary));
-
-        //Verificando que so existe ya una suscripción con ese nombre y fecha de inicio
+        validateActivitesByItinerarieDateRange(activityResource, itinerary);
+        //Verificando que si existe ya una actividad con ese nombre y fecha de inicio
         if (activityRepository.existsByNameAndIniDate(activityResource.getName(), activityResource.getIniDate())) {
             throw new ResourceAlreadyExistsException("Actividad con el mismo nombre y fecha inicial ya existe");
         }
@@ -55,12 +57,12 @@ public class ActivityService {
 
         if (optionalActivity.isPresent()) {
             Activities activity = optionalActivity.get();
-
             // Validar el id_itinerary
 
             long id_itinerary = activityResource.getId_itinerary();
             Itineraries itinerary = itineraryRepository.findById(id_itinerary)
                     .orElseThrow(()->new ResourceNotFoundException("El itinerario con este Id no existe:" + id_itinerary));
+            validateActivitesByItinerarieDateRange(activityResource, itinerary);
 
             activity.setName(activityResource.getName());
             activity.setIniDate(activityResource.getIniDate());
@@ -99,5 +101,10 @@ public class ActivityService {
         return activityMapper.entityListToResponseResourceList(activities);
     }
 
-
+    private void validateActivitesByItinerarieDateRange(ActivityRequestDto activityRequest, Itineraries itinerary) {
+        if (!activityRequest.getIniDate().isBefore(itinerary.getIni_date()) && !activityRequest.getIniDate().isAfter(itinerary.getEnd_date())) {
+            throw new ValidationExpection("La fecha de asignada a la actividad: "+activityRequest.getIniDate()+" " +
+                    "no está dentro de la fecha de ini_date: "+itinerary.getIni_date()+" y end_date: "+itinerary.getEnd_date());
+        }
+    }
 }
