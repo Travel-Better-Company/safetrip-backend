@@ -102,7 +102,8 @@ public class ActivityService {
     }
 
     private void validateActivitesByItinerarieDateRange(ActivityRequestDto activityRequest, Itineraries itinerary) {
-        if (!activityRequest.getIniDate().isBefore(itinerary.getIni_date()) && !activityRequest.getIniDate().isAfter(itinerary.getEnd_date())) {
+        if (activityRequest.getIniDate().isBefore(itinerary.getIni_date())
+                && activityRequest.getIniDate().isAfter(itinerary.getEnd_date())) {
             throw new ValidationExpection("La fecha de asignada a la actividad: "+activityRequest.getIniDate()+" " +
                     "no está dentro de la fecha de ini_date: "+itinerary.getIni_date()+" y end_date: "+itinerary.getEnd_date());
         }
