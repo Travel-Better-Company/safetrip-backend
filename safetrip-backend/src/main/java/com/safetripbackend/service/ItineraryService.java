@@ -1,7 +1,6 @@
 package com.safetripbackend.service;
 
 import com.safetripbackend.dto.*;
-import com.safetripbackend.entity.Activities;
 import com.safetripbackend.entity.Cities;
 import com.safetripbackend.entity.Itineraries;
 import com.safetripbackend.entity.Users;
@@ -15,18 +14,14 @@ import com.safetripbackend.repository.ItineraryRepository;
 import com.safetripbackend.repository.UserRepository;
 import jakarta.transaction.Transactional;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 
 @Service
@@ -36,22 +31,19 @@ public class ItineraryService {
     private final ItineraryMapper itineraryMapper;
     private final CityRepository cityRepository;
     private final UserRepository userRepository;
-    private final Validator validator;
     private final ActivityService activityService;
 
     @Transactional
     public ItineraryResponseDto createItinerary(long id_user,long id_city, ItineraryRequestDto itineraryResource) {
-        Set<ConstraintViolation<ItineraryRequestDto>> violations = validator.validate(itineraryResource);
-
-        if(!violations.isEmpty()){
-            throw new ValidationExpection("Itinerario",violations);
-        }
+        //Se valida las fechas del itinerario
         validateItinerariesByDateRange(itineraryResource);
 
+        //Verificando la existencia de los usuarios y ciudades en la base de datos
         Users user = userRepository.findById(id_user)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado con ID: "+id_user));
         Cities cities = cityRepository.findById(id_city)
                 .orElseThrow(()->new ResourceNotFoundException("Ciudad no encontrada con ID: "+id_city));
+        //Se comprueba si el itinerario ya existe en la base de datos
         if(itineraryRepository.existsByNameAndUsers_Id(itineraryResource.getName(), itineraryResource.getUserId())){
             throw new ResourceAlreadyExistsException("Itinerario con ese nombre ya existe");
         }
@@ -62,19 +54,16 @@ public class ItineraryService {
         itinerary.setUsers(user);
         itinerary.setCity(cities);
 
+        //Se guarda en la base de datos el nuevo itinerario
         itineraryRepository.save(itinerary);
         return itineraryMapper.entityToResponseResource(itinerary);
     }
     @Transactional
     public ItineraryResponseDto updateItinerary(long itineraryId, long id_user, long id_city, ItineraryRequestDto itineraryResource) {
+        //Se comprueba la existencia del itinerario
         Optional<Itineraries> optionalItinerary = itineraryRepository.findById(itineraryId);
-
         if (optionalItinerary.isPresent()) {
             Itineraries itinerary = optionalItinerary.get();
-            Set<ConstraintViolation<ItineraryRequestDto>> violations = validator.validate(itineraryResource);
-            if(!violations.isEmpty()){
-                throw new ValidationExpection("Itinerario",violations);
-            }
             validateItinerariesByDateRange(itineraryResource);
             Users user = userRepository.findById(id_user)
                     .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado con ID: "+id_user));

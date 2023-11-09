@@ -1,16 +1,14 @@
 package com.safetripbackend.controller;
 
-import com.safetripbackend.dto.JwtAuthenticationDtoResponse;
-import com.safetripbackend.dto.SignUpDtoRequest;
-import com.safetripbackend.dto.SigninDtoRequest;
+import com.safetripbackend.dto.SignupResquestDto;
+import com.safetripbackend.dto.SinginRequestDto;
+import com.safetripbackend.dto.JwtAuthenticationResponseDto;
 import com.safetripbackend.dto.UserResponseDto;
 import com.safetripbackend.security.AuthenticationService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/auth")
@@ -19,12 +17,12 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponseDto> signup(@RequestBody SignUpDtoRequest request) {
+    public ResponseEntity<UserResponseDto> signup(@RequestBody SignupResquestDto request) {
         return ResponseEntity.ok(authenticationService.signup(request));
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JwtAuthenticationDtoResponse> signin(@RequestBody SigninDtoRequest request) {
+    public ResponseEntity<JwtAuthenticationResponseDto> signin(@RequestBody SinginRequestDto request) {
         return ResponseEntity.ok(authenticationService.signin(request));
     }
 }

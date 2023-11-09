@@ -12,7 +12,7 @@ public class ActivityRequestDto {
     @Size(max = 50, message = "El nombre de la actividad no debe exceder los 50 caracteres")
     private String name;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate iniDate;
 
     @JsonFormat(pattern = "HH:mm:ss")
