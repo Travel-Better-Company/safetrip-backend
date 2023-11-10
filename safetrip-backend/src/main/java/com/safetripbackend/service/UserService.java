@@ -10,6 +10,9 @@ import com.safetripbackend.mappers.UserMapper;
 import com.safetripbackend.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -74,5 +77,15 @@ public class UserService {
             itineraryService.deleteItinerary(id);
         }
         userRepository.deleteById(userId);
+    }
+
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) {
+                return userRepository.findByEmail(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("Usuario no existe"));
+            }
+        };
     }
 }
