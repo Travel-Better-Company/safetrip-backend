@@ -25,9 +25,6 @@ public class UserMapper {
     public UserResponseDto entityToResponseResource(Users customer) {
         return modelMapper.map(customer, UserResponseDto.class);
     }
-    public UserResponseDto mapToDTO(Users user) {
-        return modelMapper.map(user, UserResponseDto.class);
-    }
 
     public List<Users> resourceListToEntityList(List<UserRequestDto> customerResources) {
         return customerResources
@@ -48,5 +45,9 @@ public class UserMapper {
                 .stream()
                 .map(this::entityToResponseResource)
                 .toList();
+    }
+
+    public UserResponseDto mapToDTO(Users user) {
+        return modelMapper.map(user, UserResponseDto.class);
     }
 }
