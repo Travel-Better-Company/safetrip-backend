@@ -35,6 +35,10 @@ public class ActivityService {
         long id_itinerary = activityResource.getId_itinerary();
         Itineraries itinerary = itineraryRepository.findById(id_itinerary)
                 .orElseThrow(()->new ResourceNotFoundException("El itinerario con este Id no existe:" + id_itinerary));
+        //Verifica que la fechas estén correctas
+
+        validateActivitesByDateRange(activityResource);
+
         validateActivitesByItinerarieDateRange(activityResource, itinerary);
         //Verificando que si existe ya una actividad con ese nombre y fecha de inicio
         if (activityRepository.existsByNameAndIniDate(activityResource.getName(), activityResource.getIniDate())) {
@@ -62,6 +66,7 @@ public class ActivityService {
             long id_itinerary = activityResource.getId_itinerary();
             Itineraries itinerary = itineraryRepository.findById(id_itinerary)
                     .orElseThrow(()->new ResourceNotFoundException("El itinerario con este Id no existe:" + id_itinerary));
+            validateActivitesByDateRange(activityResource);
             validateActivitesByItinerarieDateRange(activityResource, itinerary);
 
             activity.setName(activityResource.getName());
@@ -100,7 +105,7 @@ public class ActivityService {
         List<Activities> activities=activityRepository.findAll();
         return activityMapper.entityListToResponseResourceList(activities);
     }
-
+    /// US: Creación de actividades -> 3.Escenario Alternativo: Conflicto en la Creación de Actividad por Fecha Fuera del Rango del Itinerario
     private void validateActivitesByItinerarieDateRange(ActivityRequestDto activityRequest, Itineraries itinerary) {
         //se lanzará un error si la fecha de inicio de la actividad es anterior a la fecha de inicio del itinerario o si es posterior a la fecha de finalización del itinerario.
         if (activityRequest.getIniDate().isBefore(itinerary.getIni_date())
@@ -109,4 +114,12 @@ public class ActivityService {
                     "no está dentro de la fecha de ini_date: "+itinerary.getIni_date()+" y end_date: "+itinerary.getEnd_date());
         }
     }
+    /// US: Creación de actividades -> 2.Escenario Alternativo: Validación de Actividades con Conflictos de Horarios
+    private void validateActivitesByDateRange(ActivityRequestDto activityRequest) {
+        //se lanzará un error si la hora de la actividad es incoherente
+        if (activityRequest.getEndTime().isBefore(activityRequest.getStartTime())) {
+            throw new ValidationExpection("La hora final no debe ser menor a la hora inicial");
+        }
+    }
+
 }
