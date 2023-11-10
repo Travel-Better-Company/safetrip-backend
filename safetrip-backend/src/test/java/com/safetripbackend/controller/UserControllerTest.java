@@ -1,4 +1,4 @@
-package com.safetripbackend;
+package com.safetripbackend.controller;
 
 import com.safetripbackend.controller.UsersController;
 import com.safetripbackend.repository.UserRepository;

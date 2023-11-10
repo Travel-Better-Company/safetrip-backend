@@ -2,6 +2,7 @@ package com.safetripbackend.service;
 
 import com.safetripbackend.dto.SubscriptionRequestDTO;
 import com.safetripbackend.dto.SubscriptionResponseDTO;
+import com.safetripbackend.exception.ResourceAlreadyExistsException;
 import com.safetripbackend.exception.ResourceNotFoundException;
 import com.safetripbackend.repository.UserRepository;
 import com.safetripbackend.entity.Users;
@@ -30,14 +31,11 @@ public class SubscriptionService {
         return subscriptionRepository.existsById(subscriptionId);
     }
     public SubscriptionResponseDTO createSubscription(SubscriptionRequestDTO requestDTO) {
-        if (userRepository.existsById(requestDTO.getUserId())) {
-            throw new IllegalArgumentException("Usuario con ese id ya existe: " + requestDTO.getUserId());
-        }
 
         // Proceed with creating a new subscription
-        Subscription subscription = new Subscription();
         Users user = userRepository.findById(requestDTO.getUserId())
-                .orElseThrow(() -> new NoSuchElementException("User not found for ID: " + requestDTO.getUserId()));
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario con este ID: " + requestDTO.getUserId()));
+        Subscription subscription = new Subscription();
         subscription.setUser(user);
         subscription.setStartDate(requestDTO.getStartDate());
         subscription.setEndDate(requestDTO.getEndDate());
@@ -49,7 +47,7 @@ public class SubscriptionService {
 
     public SubscriptionResponseDTO getSubscriptionById(Long subscriptionId) {
         Subscription subscription = subscriptionRepository.findById(subscriptionId)
-                .orElseThrow(() -> new NoSuchElementException("Subscription not found for ID: " + subscriptionId));
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro la suscripcion con este ID: " + subscriptionId));
         return mapToResponseDTO(subscription);
     }
 
@@ -63,7 +61,9 @@ public class SubscriptionService {
     @Transactional
     public  void deleteSubscription(long subs_id){
         if (!subscriptionRepository.existsById(subs_id)) {
-            throw new ResourceNotFoundException("Itinerario con ese id no existe"+subs_id);
+            //Solución temporal
+            throw new ResourceNotFoundException("No se encontro la suscripcion con este ID: "+subs_id);
+            //Se tendría que crear una una excepcion en caso de que el objeto no exista
         }
         subscriptionRepository.deleteById(subs_id);
     }
