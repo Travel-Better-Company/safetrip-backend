@@ -19,7 +19,7 @@ public class Subscription {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id_user")
     private Users user;
 
     @Column(nullable = false)

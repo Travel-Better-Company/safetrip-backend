@@ -78,6 +78,7 @@ public class UserService {
         }
         userRepository.deleteById(userId);
     }
+
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
             @Override

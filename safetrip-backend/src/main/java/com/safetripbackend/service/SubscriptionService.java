@@ -30,8 +30,8 @@ public class SubscriptionService {
         return subscriptionRepository.existsById(subscriptionId);
     }
     public SubscriptionResponseDTO createSubscription(SubscriptionRequestDTO requestDTO) {
-        if (userRepository.existsById(requestDTO.getUserId())) {
-            throw new IllegalArgumentException("Usuario con ese id ya existe: " + requestDTO.getUserId());
+        if (!userRepository.existsById(requestDTO.getUserId())) {
+            throw new IllegalArgumentException("User does not exist for ID: " + requestDTO.getUserId());
         }
 
         // Proceed with creating a new subscription
@@ -41,10 +41,9 @@ public class SubscriptionService {
         subscription.setUser(user);
         subscription.setStartDate(requestDTO.getStartDate());
         subscription.setEndDate(requestDTO.getEndDate());
-        //subscriptionRepository.save(subscription);
+        subscriptionRepository.save(subscription);
         //Subscription savedSubscription = subscriptionRepository.save(subscription);
-        Subscription savedSubscription = subscriptionRepository.save(subscription);
-        return mapToResponseDTO(savedSubscription);
+        return mapToResponseDTO(subscription);
     }
 
     public SubscriptionResponseDTO getSubscriptionById(Long subscriptionId) {
