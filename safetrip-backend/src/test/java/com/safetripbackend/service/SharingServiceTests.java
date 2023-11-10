@@ -26,6 +26,7 @@ public class SharingServiceTests {
     @Mock
     private ItineraryService itineraryService;
 
+    ///US: Compartir itinerario -> 1.Escenario Exitoso
     @Test
     public void testShareItinerary() {
         // Parametros input

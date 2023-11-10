@@ -37,6 +37,7 @@ public class ItineraryServiceTest {
     public void setUp(){
         MockitoAnnotations.openMocks(this);
     }
+    ///US: Creación Itinerario Personalizado -> Escenario Exitoso
     @Test
     public void testCreateItinerary(){
         //Given (Arrange = preparación)
@@ -83,6 +84,7 @@ public class ItineraryServiceTest {
         assertNotNull(result);
         assertEquals(responseDto, result);
     }
+    ///US: Creación Itinerario Personalizado -> Escenario Alternativo: Conflicto en las Fechas y Horas
     @Test
     public void testCreateItineraryConflictWithDates(){
         //Given (Arrange = preparación)

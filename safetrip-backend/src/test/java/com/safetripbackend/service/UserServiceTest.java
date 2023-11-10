@@ -34,6 +34,7 @@ public class UserServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    ///US: Registro de nueva cuenta -> Escenario Exitoso: Creación de Nueva Cuenta
     @Test
     public void testCreateUser() {
         // Given
@@ -68,6 +69,7 @@ public class UserServiceTest {
         assertEquals(userResponse.getName(), result.getName());
     }
 
+    /// US:Registro de nueva cuenta -> Escenario Alternativo: Correo Electrónico ya Registrado
     @Test
     public void testCreateUserWithExistingEmail() {
         // Given
@@ -80,6 +82,7 @@ public class UserServiceTest {
         assertThrows(ResourceAlreadyExistsException.class, () -> userService.createUser(userRequest));
     }
 
+    ///US: Actualización de información de usuario -> Escenario Exitoso:
     @Test
     public void testUpdateUser() {
         // Given
@@ -119,7 +122,7 @@ public class UserServiceTest {
         assertEquals(userResponse.getEmail(), result.getEmail());
         assertEquals(userResponse.getName(), result.getName());
     }
-
+    /// US: Validación de la actualización de usuario  -> Escenario exitoso
     @Test
     public void testUpdateUserWithNonExistingUser() {
         // Given

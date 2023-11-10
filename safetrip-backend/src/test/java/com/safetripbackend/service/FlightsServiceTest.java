@@ -36,7 +36,7 @@ public class FlightsServiceTest {
     public void init() {
         MockitoAnnotations.initMocks(this);
     }
-
+    ///US: Búsqueda de vuelos -> Escenario Exitoso
     @Test
     public void testGetFlightsByDepartureCityId() {
         // Arrange
@@ -50,7 +50,7 @@ public class FlightsServiceTest {
         // Assert
         assertEquals(expectedFlights, result);
     }
-
+    ///US: Búsqueda de vuelos por ciudad de partida-> Escenario Exitoso
     @Test
     public void testGetFlightsByDepartureAndArrivalCityId() {
         // Arrange
@@ -65,7 +65,7 @@ public class FlightsServiceTest {
         // Assert
         assertEquals(expectedFlights, result);
     }
-
+    ///US: Búsqueda de vuelos por su identificador: Escenario Exitoso
     @Test
     public void testGetFlightById() {
         // Arrange

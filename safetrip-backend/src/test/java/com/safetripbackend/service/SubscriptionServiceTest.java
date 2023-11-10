@@ -31,6 +31,7 @@ public class SubscriptionServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    ///US: Sucripción de itinerario -> Escenario Exitoso
     @Test
     public void testCreateSubscription() {
         SubscriptionRequestDTO requestDTO = new SubscriptionRequestDTO();
@@ -57,6 +58,7 @@ public class SubscriptionServiceTest {
         assertEquals(requestDTO.getStartDate(), responseDTO.getStartDate());
         assertEquals(requestDTO.getEndDate(), responseDTO.getEndDate());
     }
+    ///US: Sucripción de itinerario -> Escenario Alternativo
     @Test
     public void testCreateSubscriptionUserNotFound() {
         SubscriptionRequestDTO requestDTO = new SubscriptionRequestDTO();
