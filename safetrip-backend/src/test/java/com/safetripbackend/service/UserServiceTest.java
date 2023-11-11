@@ -34,7 +34,7 @@ public class UserServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    ///US: Registro de nueva cuenta -> Escenario Exitoso: Creación de Nueva Cuenta
+    ///US: Registro de nueva cuenta (anterior) -> Escenario Exitoso: Creación de Nueva Cuenta
     @Test
     public void testCreateUser() {
         // Given
@@ -69,7 +69,7 @@ public class UserServiceTest {
         assertEquals(userResponse.getName(), result.getName());
     }
 
-    /// US:Registro de nueva cuenta -> Escenario Alternativo: Correo Electrónico ya Registrado
+    /// US:Registro de nueva cuenta (anterior) -> Escenario Alternativo: Correo Electrónico ya Registrado
     @Test
     public void testCreateUserWithExistingEmail() {
         // Given

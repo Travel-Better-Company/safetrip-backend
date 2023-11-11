@@ -35,11 +35,21 @@ public class ActivityService {
         long id_itinerary = activityResource.getId_itinerary();
         Itineraries itinerary = itineraryRepository.findById(id_itinerary)
                 .orElseThrow(()->new ResourceNotFoundException("El itinerario con este Id no existe:" + id_itinerary));
-        //Verifica que la fechas estén correctas
 
-        validateActivitesByDateRange(activityResource);
+        //Verifica que las horas estén correctas
+        //se lanzará un error si la hora de la actividad es incoherente
+        //validateActivitesByDateRange(activityResource);
+        if (activityResource.getEndTime().isBefore(activityResource.getStartTime())) {
+            throw new ValidationExpection("La hora final no debe ser menor a la hora inicial");
+        }
 
-        validateActivitesByItinerarieDateRange(activityResource, itinerary);
+        //se lanzará un error si la fecha de inicio de la actividad es anterior a la fecha de inicio del itinerario o si es posterior a la fecha de finalización del itinerario.
+        //validateActivitesByItinerarieDateRange(activityResource, itinerary);
+        if (activityResource.getIniDate().isBefore(itinerary.getIni_date())
+                || activityResource.getIniDate().isAfter(itinerary.getEnd_date())) {
+            throw new ValidationExpection("La fecha de asignada a la actividad: "+activityResource.getIniDate()+" " +
+                    "no está dentro de la fecha de ini_date: "+itinerary.getIni_date()+" y end_date: "+itinerary.getEnd_date());
+        }
         //Verificando que si existe ya una actividad con ese nombre y fecha de inicio
         if (activityRepository.existsByNameAndIniDate(activityResource.getName(), activityResource.getIniDate())) {
             throw new ResourceAlreadyExistsException("Actividad con el mismo nombre y fecha inicial ya existe");
@@ -115,7 +125,7 @@ public class ActivityService {
         }
     }
     /// US: Creación de actividades -> 2.Escenario Alternativo: Validación de Actividades con Conflictos de Horarios
-    private void validateActivitesByDateRange(ActivityRequestDto activityRequest) {
+    protected void validateActivitesByDateRange(ActivityRequestDto activityRequest) {
         //se lanzará un error si la hora de la actividad es incoherente
         if (activityRequest.getEndTime().isBefore(activityRequest.getStartTime())) {
             throw new ValidationExpection("La hora final no debe ser menor a la hora inicial");
