@@ -92,4 +92,13 @@ public class UsersController {
         List<Users> allUsers = userRepository.findAll();
         return allUsers;
     }
+    @PostMapping("/logout")
+    public ResponseEntity<LogoutResponseDto> logout(@RequestParam("secureLogout") boolean secureLogout) {
+        if (secureLogout) {
+            return new ResponseEntity<>(new LogoutResponseDto("Logout exitoso (modo seguro)"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new LogoutResponseDto("No se pudo acceder al menú avanzado, llama al servicio al cliente"),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
 }
