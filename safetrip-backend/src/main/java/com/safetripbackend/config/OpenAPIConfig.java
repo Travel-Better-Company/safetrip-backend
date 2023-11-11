@@ -12,14 +12,15 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
+
 public class OpenAPIConfig {
 
 
-    @Value("http://localhost:8080")
+    @Value("${safetrip.openapi.dev-url}")
     private String devUrl;
 
-    //@Value("${safetrip.openapi.prod-url}")
-    //private String prodUrl;
+    @Value("${safetrip.openapi.prod-url}")
+    private String prodUrl;
 
     @Bean
     public OpenAPI myOpenAPI() {
@@ -27,9 +28,9 @@ public class OpenAPIConfig {
         devServer.setUrl(devUrl);
         devServer.setDescription("Server URL in Development environment");
 
-        //Server prodServer = new Server();
-        //prodServer.setUrl(prodUrl);
-        //prodServer.setDescription("Server URL in Production environment");
+        Server prodServer = new Server();
+        prodServer.setUrl(prodUrl);
+        prodServer.setDescription("Server URL in Production environment");
 
         Contact contact = new Contact();
         contact.setEmail("ffsimonini@gmail.com");
