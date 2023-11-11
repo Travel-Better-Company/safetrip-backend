@@ -38,6 +38,7 @@ public class ActivityServiceTest  {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
     //US: Creación de Actividades -> Escemario
     @Test
     void testCreateActivity() {

@@ -1,5 +1,5 @@
 package com.safetripbackend.service;
-
+import com.safetripbackend.dto.ItineraryResponseDto;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -17,6 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserServiceTest {
@@ -28,13 +30,47 @@ public class UserServiceTest {
 
     @Mock
     private UserMapper userMapper;
-
+    @Mock
+    private ItineraryService itineraryService;
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+    //US: Eliminar cuenta de usuario -> Escenario
+    @Test
+    public void testDeleteUser() {
+        // Arrange
+        Long userId = 1L;
+        // Mock userRepository.existsById
+        when(userRepository.existsById(userId)).thenReturn(true);
 
-    ///US: Registro de nueva cuenta (anterior) -> Escenario Exitoso: Creación de Nueva Cuenta
+        // Mock itineraryService.getAllItinerary
+        List<ItineraryResponseDto> itinerarios = new ArrayList<>();  // Simula itinerarios asociados al usuario
+        ItineraryResponseDto itinerary1 = new ItineraryResponseDto();
+        itinerary1.setId(1L);
+        itinerary1.setUsers(new UserResponseDto());
+        itinerary1.getUsers().setId(userId);
+        itinerarios.add(itinerary1);
+
+        when(itineraryService.getAllItinerary()).thenReturn(itinerarios);
+
+        // Mock itineraryService.deleteItinerary
+        doNothing().when(itineraryService).deleteItinerary(anyLong());
+
+        // Mock userRepository.deleteById
+        doNothing().when(userRepository).deleteById(userId);
+
+        // Act
+        userService.deleteUser(userId);
+
+        // Assert
+        verify(userRepository, times(1)).existsById(userId);
+        verify(itineraryService, times(1)).getAllItinerary();
+        verify(itineraryService, times(1)).deleteItinerary(itinerary1.getId());
+        verify(userRepository, times(1)).deleteById(userId);
+    }
+
+    //US: Registro de nueva cuenta (anterior) -> Escenario Exitoso: Creación de Nueva Cuenta
     @Test
     public void testCreateUser() {
         // Given
