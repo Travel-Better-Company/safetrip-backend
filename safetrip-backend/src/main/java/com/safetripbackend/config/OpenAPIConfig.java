@@ -12,14 +12,15 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
+
 public class OpenAPIConfig {
 
 
-    @Value("http://localhost:8080")
+    @Value("${safetrip.openapi.dev-url}")
     private String devUrl;
 
-    //@Value("${safetrip.openapi.prod-url}")
-    //private String prodUrl;
+    @Value("${safetrip.openapi.prod-url}")
+    private String prodUrl;
 
     @Bean
     public OpenAPI myOpenAPI() {
@@ -27,14 +28,14 @@ public class OpenAPIConfig {
         devServer.setUrl(devUrl);
         devServer.setDescription("Server URL in Development environment");
 
-        //Server prodServer = new Server();
-        //prodServer.setUrl(prodUrl);
-        //prodServer.setDescription("Server URL in Production environment");
+        Server prodServer = new Server();
+        prodServer.setUrl(prodUrl);
+        prodServer.setDescription("Server URL in Production environment");
 
         Contact contact = new Contact();
         contact.setEmail("ffsimonini@gmail.com");
-        contact.setName("Franco Simonini");
-        //contact.setUrl("https://www.youtube.com/@hampcode");
+        contact.setName("SafeTrip");
+        contact.setUrl("https://github.com/Travel-Better-Company");
 
         License mitLicense = new License().name("MIT License").url("https://choosealicense.com/licenses/mit/");
 
@@ -42,10 +43,9 @@ public class OpenAPIConfig {
                 .title("SafeTrip Backend Management API")
                 .version("1.0")
                 .contact(contact)
-                .description("This API exposes endpoints to manage tutorials.").termsOfService("mylove.cope")
+                .description("This API exposes endpoints to manage tutorials.").termsOfService("https://github.com/Travel-Better-Company")
                 .license(mitLicense);
 
         return new OpenAPI().info(info).servers(List.of(devServer));
     }
 }
-
