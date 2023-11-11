@@ -80,4 +80,29 @@ public class UserControllerTest {
         assertEquals(0, follower.getFollowersCount());
         assertEquals(0, follower.getFollowersIds().size());
     }
+    @Test
+    public void testLogoutSecure() {
+        // Arrange
+        boolean secureLogout = true;
+
+        // Act
+        ResponseEntity<LogoutResponseDto> responseEntity = userController.logout(secureLogout);
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("Logout exitoso (modo seguro)", responseEntity.getBody().getMessage());
+    }
+
+    @Test
+    public void testLogoutInsecure() {
+        // Arrange
+        boolean secureLogout = false;
+
+        // Act
+        ResponseEntity<LogoutResponseDto> responseEntity = userController.logout(secureLogout);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals("No se pudo acceder al menú avanzado, llama al servicio al cliente", responseEntity.getBody().getMessage());
+    }
 }
