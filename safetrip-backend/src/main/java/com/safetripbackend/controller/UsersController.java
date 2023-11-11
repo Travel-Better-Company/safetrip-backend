@@ -55,37 +55,27 @@ public class UsersController {
 
     @PostMapping("/{followerId}/follow/{followedId}")
     public ResponseEntity<Users> followUser(@PathVariable("followerId") Long followerId, @PathVariable("followedId") Long followedId) {
-        Users follower = userRepository.findById(followerId).orElse(null);
-        Users followed = userRepository.findById(followedId).orElse(null);
-
-        if (follower == null || followed == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Usuario no encontrado
-        } else {
-            if (!follower.getFollowersIds().contains(followedId)) {
-                follower.getFollowersIds().add(followedId);
-                follower.setFollowersCount(follower.getFollowersCount() + 1);
-                userRepository.save(follower);
-            }
+        try {
+            Users follower = userService.followUser(followerId, followedId);
             return new ResponseEntity<>(follower, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 
     @DeleteMapping("/{followerId}/unfollow/{followedId}")
-    public ResponseEntity<Users> unfollowUser(@PathVariable("followerId") Long followerId, @PathVariable("followedId") Long followedId) {
-        Users follower = userRepository.findById(followerId).orElse(null);
-        Users followed = userRepository.findById(followedId).orElse(null);
-
-        if (follower == null || followed == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Usuario no encontrado
-        } else {
-            if (follower.getFollowersIds().contains(followedId)) {
-                follower.getFollowersIds().remove(followedId);
-                follower.setFollowersCount(follower.getFollowersCount() - 1);
-                userRepository.save(follower);
-            }
-            return new ResponseEntity<>(follower, HttpStatus.OK);
+    public ResponseEntity<UserResponseDto> unfollowUser(@PathVariable("followerId") Long followerId, @PathVariable("followedId") Long followedId) {
+        try {
+            UserResponseDto responseDto = userService.unfollowUser(followerId, followedId);
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @GetMapping("/followers")
     public List<Users> getAllUsers1() {

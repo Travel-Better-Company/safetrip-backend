@@ -56,28 +56,5 @@ public class UserControllerTest {
         assertEquals(1, follower.getFollowersIds().size());
     }
 
-    @Test
-    public void testUnfollowUser() {
-        Long followerId = 1L;
-        Long followedId = 2L;
 
-        Users follower = new Users();
-        follower.setId(followerId);
-        follower.setFollowersCount(1L);
-        List<Long> followersIds = new ArrayList<>();
-        followersIds.add(followedId);
-        follower.setFollowersIds(followersIds);
-
-        Users followed = new Users();
-        followed.setId(followedId);
-
-        when(userRepository.findById(followerId)).thenReturn(Optional.of(follower));
-        when(userRepository.findById(followedId)).thenReturn(Optional.of(followed));
-
-        ResponseEntity<Users> responseEntity = userController.unfollowUser(followerId, followedId);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(0, follower.getFollowersCount());
-        assertEquals(0, follower.getFollowersIds().size());
-    }
 }

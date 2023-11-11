@@ -79,6 +79,41 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
+    @Transactional
+    public Users followUser(Long followerId, Long followedId) {
+        Users follower = userRepository.findById(followerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + followerId));
+
+        Users followed = userRepository.findById(followedId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + followedId));
+
+        if (!follower.getFollowersIds().contains(followedId)) {
+            follower.getFollowersIds().add(followedId);
+            follower.setFollowersCount(follower.getFollowersCount() + 1);
+            userRepository.save(follower);
+        }
+
+        return follower;
+    }
+    @Transactional
+    public UserResponseDto unfollowUser(Long followerId, Long followedId) {
+        Users follower = userRepository.findById(followerId).orElse(null);
+        Users followed = userRepository.findById(followedId).orElse(null);
+
+        if (follower == null || followed == null) {
+            throw new ResourceNotFoundException("Usuario no encontrado");
+        } else {
+            if (follower.getFollowersIds().contains(followedId)) {
+                follower.getFollowersIds().remove(followedId);
+                follower.setFollowersCount(follower.getFollowersCount() - 1);
+                follower = userRepository.save(follower);
+                return userMapper.entityToResponseResource(follower);
+            } else {
+                throw new IllegalStateException("El usuario no sigue a la persona indicada");
+            }
+        }
+    }
+
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
             @Override

@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,6 +104,77 @@ public class UserServiceTest {
         assertEquals(userResponse.getId(), result.getId());
         assertEquals(userResponse.getEmail(), result.getEmail());
         assertEquals(userResponse.getName(), result.getName());
+    }
+
+    //US: Seguir a Otros Viajeros  -> Escenario
+    @Test
+    public void testFollowUser() {
+        // Given
+        Long followerId = 1L;
+        Long followedId = 2L;
+
+        Users follower = new Users();
+        follower.setId(followerId);
+        follower.setFollowersIds(new ArrayList<>());
+        follower.setFollowersCount(0L);
+
+        Users followed = new Users();
+        followed.setId(followedId);
+
+        when(userRepository.findById(followerId)).thenReturn(Optional.of(follower));
+        when(userRepository.findById(followedId)).thenReturn(Optional.of(followed));
+        when(userRepository.save(follower)).thenReturn(follower);
+
+        // When
+        Users result = userService.followUser(followerId, followedId);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(follower.getId(), result.getId());
+        assertTrue(result.getFollowersIds().contains(followedId));
+        assertEquals(1, result.getFollowersCount());
+
+        // Verificar que el método save fue invocado una vez
+        verify(userRepository, times(1)).save(follower);
+    }
+    //US: Seguir a Otros Viajeros  -> Escenario
+
+    @Test
+    public void testUnfollowUser() {
+        // Given
+        Long followerId = 1L;
+        Long followedId = 2L;
+
+        Users follower = new Users();
+        follower.setId(followerId);
+        follower.setFollowersIds(new ArrayList<>(Collections.singletonList(followedId)));
+        follower.setFollowersCount(1L);
+
+        Users followed = new Users();
+        followed.setId(followedId);
+
+        UserResponseDto expectedResponse = new UserResponseDto();
+
+        // Ajusta la configuración del mock para simular el comportamiento del repositorio y del mapper
+        when(userRepository.findById(followerId)).thenReturn(Optional.of(follower));
+        when(userRepository.findById(followedId)).thenReturn(Optional.of(followed));
+        when(userRepository.save(any(Users.class))).thenReturn(follower);
+        when(userMapper.entityToResponseResource(follower)).thenReturn(expectedResponse);
+
+        // When
+        UserResponseDto actualResponse = userService.unfollowUser(followerId, followedId);
+
+        // Then
+        assertNotNull(actualResponse);
+        assertEquals(expectedResponse, actualResponse);
+
+        // Verificar que los métodos del repositorio se llamaron correctamente
+        verify(userRepository, times(1)).findById(followerId);
+        verify(userRepository, times(1)).findById(followedId);
+        verify(userRepository, times(1)).save(follower);
+
+        // Verificar que el método del mapper se llamó correctamente
+        verify(userMapper, times(1)).entityToResponseResource(follower);
     }
 
     /// US:Registro de nueva cuenta (anterior) -> Escenario Alternativo: Correo Electrónico ya Registrado
