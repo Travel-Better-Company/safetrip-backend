@@ -25,6 +25,12 @@ public class AuthenticationService {
     private final UserMapper userMapper;
 
     public UserResponseDto signup(SignupResquestDto request) {
+        if (request.getName() == null || request.getEmail() == null || request.getPassword() == null) {
+            throw new IllegalArgumentException("Nombre, correo o contraseña no pueden ser nulos.");
+        }
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("El correo electrónico ya está registrado.");
+        }
         var user = Users.builder()
                 .name(request.getName())
                 .email(request.getEmail())

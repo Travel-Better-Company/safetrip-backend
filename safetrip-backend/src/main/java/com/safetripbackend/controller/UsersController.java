@@ -5,6 +5,7 @@ import com.safetripbackend.dto.UserResponseDto;
 import com.safetripbackend.repository.UserRepository;
 import com.safetripbackend.exception.ResourceNotFoundException;
 import com.safetripbackend.service.UserService;
+import com.safetripbackend.dto.LogoutResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,31 +56,51 @@ public class UsersController {
 
     @PostMapping("/{followerId}/follow/{followedId}")
     public ResponseEntity<Users> followUser(@PathVariable("followerId") Long followerId, @PathVariable("followedId") Long followedId) {
-        try {
-            Users follower = userService.followUser(followerId, followedId);
+        Users follower = userRepository.findById(followerId).orElse(null);
+        Users followed = userRepository.findById(followedId).orElse(null);
+
+        if (follower == null || followed == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Usuario no encontrado
+        } else {
+            if (!follower.getFollowersIds().contains(followedId)) {
+                follower.getFollowersIds().add(followedId);
+                follower.setFollowersCount(follower.getFollowersCount() + 1);
+                userRepository.save(follower);
+            }
             return new ResponseEntity<>(follower, HttpStatus.OK);
-        } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 
     @DeleteMapping("/{followerId}/unfollow/{followedId}")
-    public ResponseEntity<UserResponseDto> unfollowUser(@PathVariable("followerId") Long followerId, @PathVariable("followedId") Long followedId) {
-        try {
-            UserResponseDto responseDto = userService.unfollowUser(followerId, followedId);
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (IllegalStateException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Users> unfollowUser(@PathVariable("followerId") Long followerId, @PathVariable("followedId") Long followedId) {
+        Users follower = userRepository.findById(followerId).orElse(null);
+        Users followed = userRepository.findById(followedId).orElse(null);
+
+        if (follower == null || followed == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Usuario no encontrado
+        } else {
+            if (follower.getFollowersIds().contains(followedId)) {
+                follower.getFollowersIds().remove(followedId);
+                follower.setFollowersCount(follower.getFollowersCount() - 1);
+                userRepository.save(follower);
+            }
+            return new ResponseEntity<>(follower, HttpStatus.OK);
         }
     }
-
 
     @GetMapping("/followers")
     public List<Users> getAllUsers1() {
         List<Users> allUsers = userRepository.findAll();
         return allUsers;
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<LogoutResponseDto> logout(@RequestParam("secureLogout") boolean secureLogout) {
+        if (secureLogout) {
+            return new ResponseEntity<>(new LogoutResponseDto("Logout exitoso (modo seguro)"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new LogoutResponseDto("No se pudo acceder al menú avanzado, llama al servicio al cliente"),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 }

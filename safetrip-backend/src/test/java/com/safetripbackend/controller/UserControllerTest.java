@@ -2,6 +2,7 @@ package com.safetripbackend.controller;
 
 import com.safetripbackend.controller.UsersController;
 import com.safetripbackend.repository.UserRepository;
+import com.safetripbackend.dto.LogoutResponseDto;
 import com.safetripbackend.entity.Users;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,5 +57,53 @@ public class UserControllerTest {
         assertEquals(1, follower.getFollowersIds().size());
     }
 
+    @Test
+    public void testUnfollowUser() {
+        Long followerId = 1L;
+        Long followedId = 2L;
 
+        Users follower = new Users();
+        follower.setId(followerId);
+        follower.setFollowersCount(1L);
+        List<Long> followersIds = new ArrayList<>();
+        followersIds.add(followedId);
+        follower.setFollowersIds(followersIds);
+
+        Users followed = new Users();
+        followed.setId(followedId);
+
+        when(userRepository.findById(followerId)).thenReturn(Optional.of(follower));
+        when(userRepository.findById(followedId)).thenReturn(Optional.of(followed));
+
+        ResponseEntity<Users> responseEntity = userController.unfollowUser(followerId, followedId);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(0, follower.getFollowersCount());
+        assertEquals(0, follower.getFollowersIds().size());
+    }
+    @Test
+    public void testLogoutSecure() {
+        // Arrange
+        boolean secureLogout = true;
+
+        // Act
+        ResponseEntity<LogoutResponseDto> responseEntity = userController.logout(secureLogout);
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("Logout exitoso (modo seguro)", responseEntity.getBody().getMessage());
+    }
+
+    @Test
+    public void testLogoutInsecure() {
+        // Arrange
+        boolean secureLogout = false;
+
+        // Act
+        ResponseEntity<LogoutResponseDto> responseEntity = userController.logout(secureLogout);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals("No se pudo acceder al menú avanzado, llama al servicio al cliente", responseEntity.getBody().getMessage());
+    }
 }
